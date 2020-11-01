@@ -15,3 +15,10 @@
 *.sx32fsl
 *.wx64fsl
 *.wx32fsl
+.ipynb_checkpoints
+lib
+*.tgz
+node_modules
+yarn.lock
+*.log
+package-lock.json

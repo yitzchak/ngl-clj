@@ -1,0 +1,12 @@
+.__________ngl_container {
+    height: 100%;
+    width: 100%;
+    background-color: white;
+}
+
+.jupyter-widgets.ngl {
+    height: 400px;
+    overflow: hidden;
+    flex: 1 1 auto;
+}
+
