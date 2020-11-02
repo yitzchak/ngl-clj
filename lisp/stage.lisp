@@ -125,7 +125,12 @@
      :accessor mouse-preset
      :initarg :mouse-preset
      :initform "default"
-     :trait :string))
+     :trait :string)
+   (components
+     :accessor components
+     :initarg :components
+     :initform nil
+     :trait :widget-list))
   (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs

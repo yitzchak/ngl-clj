@@ -49,6 +49,8 @@ export class StageModel extends DOMWidgetModel {
       tooltip: true,
       mouse_preset: 'default',
 
+      components: [],
+
       _model_name: 'StageModel',
       _model_module: MODULE_NAME,
       _model_module_version: MODULE_VERSION,
@@ -59,19 +61,26 @@ export class StageModel extends DOMWidgetModel {
   }
 
   static serializers: ISerializers = {
-    context_menus: { deserialize: widgets.unpack_models },
-    elements: { deserialize: widgets.unpack_models },
-    graph_layouts: { deserialize: widgets.unpack_models },
+    components: { deserialize: widgets.unpack_models },
     ...DOMWidgetModel.serializers,
   };
 }
 
 export class StageView extends DOMWidgetView {
   stage_obj: any;
+  componentViews: any;
+  in_components_changing = false;
+
 
   initialize(parameters: any): void {
     super.initialize(parameters);
+    this.componentViews = new widgets.ViewList(
+      this.create_ngl_child_view,
+      this.remove_ngl_child_view,
+      this
+    );
     this.model.on('msg:custom', this.handle_custom_message.bind(this));
+    this.model.on('change:components', this.components_changed, this);
     this.model.on_some_change([
       'impostor',
       'quality',
@@ -99,6 +108,18 @@ export class StageView extends DOMWidgetView {
       'tooltip',
       'mouse_preset'
     ], this.setParameters.bind(this), this);
+  }
+
+  async components_changed() {
+    this.in_components_changing = true;
+
+    let views = await this.componentViews.update(this.model.get('components'));
+
+    for (let view of views) {
+      await view.render();
+    }
+
+    this.in_components_changing = false;
   }
 
   handle_custom_message(content: any): void {
@@ -147,13 +168,12 @@ export class StageView extends DOMWidgetView {
       this.el.classList.add('jupyter-widgets');
 
       this.stage_obj = new NGL.Stage(this.el, this.stage_parameters());
-      this.stage_obj.loadFile("rcsb://1crn", {defaultRepresentation: true});
+      this.components_changed();
     });
   }
 
   setParameters(): void {
     if (this.stage_obj) {
-      console.log(this.stage_parameters());
       this.stage_obj.setParameters(this.stage_parameters());
     }
   }

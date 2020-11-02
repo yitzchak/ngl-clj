@@ -12,6 +12,9 @@
     #:clip-mode
     #:clip-near
     #:clip-scale
+    #:component
+    #:components
+    #:ext
     #:fog-far
     #:fog-near
     #:hover-timeout
@@ -21,10 +24,14 @@
     #:mouse-preset
     #:pan-speed
     #:quality
+    #:representations
     #:rotate-speed
     #:sample-level
     #:stage
+    #:%structure
     #:tooltip
+    #:uuid
+    #:value
     #:worker-default
     #:zoom-speed))
 
