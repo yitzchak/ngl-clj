@@ -1,6 +1,6 @@
 {
   "name": "ngl-clj",
-  "version": "0.2.18",
+  "version": "0.1.4",
   "description": "A ngl Widget for Common Lisp Jupyter",
   "keywords": [
     "nglview",
@@ -10,7 +10,7 @@
     "widgets"
   ],
   "files": [
-    "{dist,lib}/**/*.{js,ts,map}",
+    "{js}/**/*.{js,ts,map}",
     "css/*.css",
     "LICENSE.md"
   ],
@@ -23,8 +23,8 @@
     "name": "Tarn W. Burton",
     "email": "twburton@gmail.com"
   },
-  "main": "lib/index.js",
-  "types": "./lib/index.d.ts",
+  "main": "js/index.js",
+  "types": "./js/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/yitzchak/nglview-clj"
@@ -57,7 +57,7 @@
     "typescript": "^3.9.6"
   },
   "jupyterlab": {
-    "extension": "lib/plugin"
+    "extension": "js/plugin"
   },
   "lint-staged": {
     "*.ts": [

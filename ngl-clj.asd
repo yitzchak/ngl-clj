@@ -11,4 +11,4 @@
       :components
         ((:file "packages")
          (:file "version")
-         (:file "ngl")))))
+         (:file "stage")))))

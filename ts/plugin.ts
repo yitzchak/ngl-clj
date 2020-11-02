@@ -30,7 +30,7 @@ function activateWidgetExtension(
 
     exports: async () => {
       return {
-        ...await import(/* webpackChunkName: "ngl-clj" */ './widget')
+        ...await import(/* webpackChunkName: "ngl-clj" */ './stage')
       }
     }
   });

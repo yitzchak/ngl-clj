@@ -16,7 +16,7 @@
 *.wx64fsl
 *.wx32fsl
 .ipynb_checkpoints
-lib
+js
 *.tgz
 node_modules
 yarn.lock

@@ -4,7 +4,7 @@
     background-color: white;
 }
 
-.jupyter-widgets.ngl {
+.jupyter-widgets.ngl-stage {
     height: 400px;
     overflow: hidden;
     flex: 1 1 auto;
