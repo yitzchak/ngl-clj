@@ -31,6 +31,7 @@ function activateWidgetExtension(
     exports: async () => {
       return {
         ...await import(/* webpackChunkName: "ngl-clj" */ './component'),
+        ...await import(/* webpackChunkName: "ngl-clj" */ './representation'),
         ...await import(/* webpackChunkName: "ngl-clj" */ './stage')
       }
     }

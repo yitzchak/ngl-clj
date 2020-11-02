@@ -35,6 +35,8 @@
   (:documentation "")
   (:default-initargs
     :%model-name "StructureModel"
-    :%view-name "StructureView"))
+    :%view-name "StructureView"
+    :representations (list (make-instance 'cartoon)
+                           (make-instance 'ball-and-stick :sele "ligand"))))
 
 (jupyter-widgets:register-widget %structure)

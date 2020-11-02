@@ -4,9 +4,11 @@
     #:ambient-color
     #:ambient-intensity
     #:background-color
+    #:ball-and-stick
     #:camera-eye-sep
     #:camera-fov
     #:camera-type
+    #:cartoon
     #:clip-dist
     #:clip-far
     #:clip-mode
@@ -24,11 +26,15 @@
     #:mouse-preset
     #:pan-speed
     #:quality
+    #:representation
     #:representations
     #:rotate-speed
     #:sample-level
+    #:sele
+    #:sphere-detail
     #:stage
     #:%structure
+    #:structure-representation
     #:tooltip
     #:uuid
     #:value

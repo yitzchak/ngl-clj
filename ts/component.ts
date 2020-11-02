@@ -77,7 +77,8 @@ export class ComponentView extends WidgetView {
 
   create_ngl_child_view(model: any, index: any) {
     return this.create_child_view(model, {
-      stage_obj: this.stage_obj
+      stage_obj: this.stage_obj,
+      component_obj: this.component_obj
     });
   }
 
@@ -115,9 +116,10 @@ export class StructureView extends ComponentView {
     super.render();
     if (this.stage_obj && !this.component_obj && !this.rendered) {
       this.rendered = true;
-      this.stage_obj.loadFile(this.model.get('value'), { defaultRepresentation: true })
+      this.stage_obj.loadFile(this.model.get('value'))//, { defaultRepresentation: true })
       	.then((component: any) => {
       	  this.component_obj = component;
+      	  this.representations_changed();
       	});
     }
   }
