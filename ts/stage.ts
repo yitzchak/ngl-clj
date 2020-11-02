@@ -157,15 +157,12 @@ export class StageView extends DOMWidgetView {
     }
   }
 
-  handleEvent(event: Event): void {
-    if (event.type === 'contextmenu') event.stopPropagation();
-  }
-
   render() {
     super.render();
     this.displayed.then(() => {
       this.el.classList.add('ngl-stage');
       this.el.classList.add('jupyter-widgets');
+      this.el.setAttribute('data-jp-suppress-context-menu', '');
 
       this.stage_obj = new NGL.Stage(this.el, this.stage_parameters());
       this.components_changed();
