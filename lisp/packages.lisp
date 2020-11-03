@@ -5,6 +5,7 @@
     #:ambient-intensity
     #:background-color
     #:ball-and-stick
+    #:base
     #:camera-eye-sep
     #:camera-fov
     #:camera-type
@@ -14,6 +15,7 @@
     #:clip-mode
     #:clip-near
     #:clip-scale
+    #:color-scheme
     #:component
     #:components
     #:ext
@@ -38,6 +40,7 @@
     #:tooltip
     #:uuid
     #:value
+    #:visible
     #:worker-default
     #:zoom-speed))
 

@@ -22,6 +22,7 @@ export class ComponentModel extends WidgetModel {
       ...super.defaults(),
 
       uuid: null,
+      visible: true,
 
       representations: [],
 
@@ -56,6 +57,7 @@ export class ComponentView extends WidgetView {
     );
     this.model.on('msg:custom', this.handle_custom_message.bind(this));
     this.model.on('change:representations', this.representations_changed, this);
+    this.model.on('change:visible', this.visible_changed.bind(this));
   }
 
   async representations_changed() {
@@ -68,6 +70,12 @@ export class ComponentView extends WidgetView {
     }
 
     this.in_representations_changing = false;
+  }
+
+  visible_changed() {
+    if (this.component_obj) {
+      this.component_obj.setVisibility(this.model.get('visible'));
+    }
   }
 
   handle_custom_message(content: any): void {
@@ -116,10 +124,12 @@ export class StructureView extends ComponentView {
     super.render();
     if (this.stage_obj && !this.component_obj && !this.rendered) {
       this.rendered = true;
-      this.stage_obj.loadFile(this.model.get('value'))//, { defaultRepresentation: true })
+      this.stage_obj.loadFile(this.model.get('value'))
       	.then((component: any) => {
+      	  this.visible_changed();
       	  this.component_obj = component;
       	  this.representations_changed();
+      	  this.component_obj.autoView();
       	});
     }
   }

@@ -1,7 +1,16 @@
 (in-package #:ngl)
 
 (defclass representation (jupyter-widgets:widget)
-  ()
+  ((color-scheme
+     :accessor color-scheme
+     :initarg :color-scheme
+     :initform "chainname"
+     :trait :string)
+   (visible
+     :accessor visible
+     :initarg :visible
+     :initform t
+     :trait :bool))
   (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
@@ -41,6 +50,17 @@
   (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
+    :color-scheme "element"
     :%model-name "BallAndStickModel"))
 
 (jupyter-widgets:register-widget ball-and-stick)
+
+
+(defclass base (ball-and-stick)
+  ()
+  (:metaclass jupyter-widgets:trait-metaclass)
+  (:documentation "")
+  (:default-initargs
+    :%model-name "BaseModel"))
+
+(jupyter-widgets:register-widget base)

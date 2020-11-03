@@ -10,7 +10,12 @@
      :accessor representations
      :initarg :representations
      :initform nil
-     :trait :widget-list))
+     :trait :widget-list)
+   (visible
+     :accessor visible
+     :initarg :visible
+     :initform t
+     :trait :bool))
   (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
@@ -37,6 +42,7 @@
     :%model-name "StructureModel"
     :%view-name "StructureView"
     :representations (list (make-instance 'cartoon)
+                           (make-instance 'base)
                            (make-instance 'ball-and-stick :sele "ligand"))))
 
 (jupyter-widgets:register-widget %structure)

@@ -21,8 +21,10 @@ export class RepresentationModel extends WidgetModel {
     return {
       ...super.defaults(),
 
-      _name: "",
+      color_scheme: "chainname",
+      visible: true,
 
+      _type: "",
       _model_module: MODULE_NAME,
       _model_module_version: MODULE_VERSION,
       _view_name: 'RepresentationView',
@@ -44,6 +46,14 @@ export class RepresentationView extends WidgetView {
     this.component_obj = this.options.component_obj;
 
     this.model.on('msg:custom', this.handle_custom_message.bind(this));
+    this.model.on('change', this.parameters_changed.bind(this));
+    this.model.on('change:visible', this.visible_changed.bind(this));
+  }
+
+  visible_changed() {
+    if (this.component_obj) {
+      this.component_obj.setVisibility(this.model.get('visible'));
+    }
   }
 
   handle_custom_message(content: any): void {
@@ -51,12 +61,22 @@ export class RepresentationView extends WidgetView {
     }
   }
 
+  get_parameters(): any {
+    return camelcaseKeys(this.model.attributes, { exclude: [/^_/] });
+  }
+
+  parameters_changed() {
+    if (this.representation_obj) {
+     this.representation_obj.setParameters(this.get_parameters());
+    }
+  }
+
   render() {
     super.render();
     if (this.component_obj && !this.representation_obj) {
-      var parameters: any = camelcaseKeys(this.model.attributes, { exclude: [/^_/] })
-      console.log(parameters);
-      this.representation_obj = this.component_obj.addRepresentation(this.model.get('_name'), parameters);
+      this.representation_obj =
+        this.component_obj.addRepresentation(this.model.get('_type'),
+                                             this.get_parameters());
     }
   }
 
@@ -86,8 +106,7 @@ export class CartoonModel extends StructureRepresentationModel {
     return {
       ...super.defaults(),
 
-      _name: 'cartoon',
-
+      _type: 'cartoon',
       _model_name: 'CartoonModel'
     };
   }
@@ -99,12 +118,25 @@ export class BallAndStickModel extends StructureRepresentationModel {
     return {
       ...super.defaults(),
 
-      _name: 'ball+stick',
-
       sphere_detail: 2,
 
+      _type: 'ball+stick',
       _model_name: 'BallAndStickModel'
     };
   }
 }
+
+
+export class BaseModel extends BallAndStickModel {
+  defaults() {
+    return {
+      ...super.defaults(),
+
+      _type: 'base',
+      _model_name: 'BaseModel'
+    };
+  }
+}
+
+
 
