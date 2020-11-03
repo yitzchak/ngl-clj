@@ -64,3 +64,41 @@
     :%model-name "BaseModel"))
 
 (jupyter-widgets:register-widget base)
+
+
+(defclass measurement (representation)
+  ((label-size
+     :accessor label-size
+     :initarg :label-size
+     :initform 2d0
+     :trait :float)
+   (label-color
+     :accessor label-color
+     :initarg :label-color
+     :initform "white"
+     :trait :color)
+   (label-visible
+     :accessor label-visible
+     :initarg :label-visible
+     :initform t
+     :trait :bool)
+   (label-z-offset
+     :accessor label-z-offset
+     :initarg :label-z-offset
+     :initform 0.5d0
+     :trait :float))
+  (:metaclass jupyter-widgets:trait-metaclass)
+  (:documentation ""))
+
+
+(defclass dihedral (measurement)
+  ((atom-quad
+     :accessor atom-quad
+     :initarg :atom-quad
+     :initform nil
+     :trait :list))
+  (:metaclass jupyter-widgets:trait-metaclass)
+  (:documentation ""))
+
+(jupyter-widgets:register-widget dihedral)
+

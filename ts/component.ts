@@ -124,7 +124,11 @@ export class StructureView extends ComponentView {
     super.render();
     if (this.stage_obj && !this.component_obj && !this.rendered) {
       this.rendered = true;
-      this.stage_obj.loadFile(this.model.get('value'))
+      var params: any = {};
+      if (this.model.get('ext')) {
+      	params.ext = this.model.get('ext');
+      }
+      this.stage_obj.loadFile(this.model.get('value'), params)
       	.then((component: any) => {
       	  this.visible_changed();
       	  this.component_obj = component;

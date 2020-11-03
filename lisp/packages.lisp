@@ -3,6 +3,7 @@
   (:export
     #:ambient-color
     #:ambient-intensity
+    #:atom-quad
     #:background-color
     #:ball-and-stick
     #:base
@@ -18,13 +19,19 @@
     #:color-scheme
     #:component
     #:components
+    #:dihedral
     #:ext
     #:fog-far
     #:fog-near
     #:hover-timeout
     #:impostor
+    #:label-color
+    #:label-size
+    #:label-visible
+    #:label-z-offset
     #:light-color
     #:light-intensity
+    #:measurement
     #:mouse-preset
     #:pan-speed
     #:quality

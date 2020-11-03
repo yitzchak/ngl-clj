@@ -139,4 +139,27 @@ export class BaseModel extends BallAndStickModel {
 }
 
 
+export class MeasurementRepresentationModel extends RepresentationModel {
+  defaults() {
+    return {
+      ...super.defaults(),
+
+      label_size: 2.0,
+      label_color: "white",
+      label_visible: true,
+      label_z_offset: 0.5
+    };
+  }
+}
+
+
+export class DihedralModel extends MeasurementRepresentationModel {
+  defaults() {
+    return {
+      ...super.defaults(),
+
+      atom_quad: []
+    };
+  }
+}
 
