@@ -1,16 +1,31 @@
 (in-package #:ngl)
 
+
 (defclass component (jupyter-widgets:widget)
-  ((uuid
-     :accessor uuid
-     :initarg :uuid
-     :initform (jupyter:make-uuid)
+  ((name
+     :accessor name
+     :initarg :name
      :trait :string)
+   #+(or)(position
+     :accessor position
+     :initarg :position
+     :initform #(0d0 0d0 0d0)
+     :trait :float-vector)
    (representations
      :accessor representations
      :initarg :representations
      :initform nil
      :trait :widget-list)
+   (quaternion
+     :accessor quaternion
+     :initarg :quaternion
+     :initform #(0d0 0d0 0d0 0d0)
+     :trait :float-vector)
+   (scale
+     :accessor scale
+     :initarg :scale
+     :initform 1d0
+     :trait :float)
    (visible
      :accessor visible
      :initarg :visible
@@ -25,6 +40,13 @@
     :%view-module-version +module-version+))
 
 
+(defun auto-view (component &optional (duration 0))
+  (jupyter-widgets:send-custom component
+                               (jupyter:json-new-obj
+                                 ("do" "auto_view")
+                                 ("duration" duration))))
+
+
 (defclass %structure (component)
   ((ext
      :accessor ext
@@ -35,7 +57,22 @@
      :accessor value
      :initarg :value
      :initform :null
-     :trait :json))
+     :trait :json)
+   (positions
+     :accessor positions
+     :initarg :positions
+     :initform :null
+     :trait :vector)
+   (as-trajectory
+     :accessor as-trajectory
+     :initarg :as-trajectory
+     :initform nil
+     :trait :bool)
+   (trajectories
+     :accessor trajectories
+     :initarg :trajectories
+     :initform nil
+     :trait :widget-list))
   (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
@@ -46,3 +83,5 @@
                            (make-instance 'ball-and-stick :sele "ligand"))))
 
 (jupyter-widgets:register-widget %structure)
+
+

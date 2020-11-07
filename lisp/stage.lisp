@@ -130,7 +130,22 @@
      :accessor components
      :initarg :components
      :initform nil
-     :trait :widget-list))
+     :trait :widget-list)
+   (rock
+     :accessor rock
+     :initarg :rock
+     :initform nil
+     :trait :bool)
+   (spin
+     :accessor spin
+     :initarg :spin
+     :initform nil
+     :trait :bool)
+   (callbacks-lock
+     :accessor callbacks-lock)
+   (callbacks
+     :reader callbacks
+     :initform (make-hash-table :test #'equal)))
   (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
@@ -143,3 +158,32 @@
 
 (jupyter-widgets:register-widget stage)
 
+
+(defmethod initialize-instance :after ((instance stage) &rest initargs &key &allow-other-keys)
+  (declare (ignore initargs))
+  (setf (callbacks-lock instance) (bordeaux-threads:make-lock (jupyter:comm-id instance))))
+
+
+(defun make-image (instance callback &key antialias (factor 1) transparent trim)
+  (bordeaux-threads:with-lock-held ((callbacks-lock instance))
+    (let ((uuid (jupyter:make-uuid)))
+      (setf (gethash uuid (callbacks instance)) callback)
+      (jupyter-widgets:send-custom instance
+        (jupyter:json-new-obj
+          ("do" "make-image")
+          ("uuid" uuid)
+          ("factor" factor)
+          ("antialias" (if antialias :true :false))
+          ("transparent" (if transparent :true :false))
+          ("trim" (if trim :true :false)))))))
+
+
+(defmethod jupyter-widgets:on-custom-message ((instance stage) content buffers)
+  (alexandria:switch ((jupyter:json-getf content "do") :test #'string=)
+    ("make-image"
+      (bordeaux-threads:with-lock-held ((callbacks-lock instance))
+        (funcall (gethash (jupyter:json-getf content "uuid") (callbacks instance))
+                 (first buffers)
+                 (jupyter:json-getf content "type"))
+        (remhash (jupyter:json-getf content "uuid") (callbacks instance))))))
+    

@@ -1,9 +1,11 @@
 (defpackage #:ngl
   (:use #:common-lisp)
+  (:shadow #:structure)
   (:export
     #:ambient-color
     #:ambient-intensity
     #:atom-quad
+    #:auto-view
     #:background-color
     #:ball-and-stick
     #:base
@@ -19,6 +21,9 @@
     #:color-scheme
     #:component
     #:components
+    #:rock
+    #:trajectory
+    #:trajectories
     #:dihedral
     #:ext
     #:fog-far
@@ -33,17 +38,23 @@
     #:light-intensity
     #:measurement
     #:mouse-preset
+    #:name
     #:pan-speed
+    #:position
+    #:positions
     #:quality
     #:representation
     #:representations
     #:rotate-speed
+    #:quaternion
     #:sample-level
+    #:scale
     #:sele
     #:sphere-detail
     #:stage
     #:%structure
     #:structure-representation
+    #:spin
     #:tooltip
     #:uuid
     #:value

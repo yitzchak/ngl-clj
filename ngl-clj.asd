@@ -12,5 +12,6 @@
         ((:file "packages")
          (:file "version")
          (:file "representation")
+         (:file "trajectory")
          (:file "component")
          (:file "stage")))))

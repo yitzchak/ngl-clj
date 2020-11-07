@@ -48,6 +48,8 @@ export class StageModel extends DOMWidgetModel {
       hover_timeout: 0,
       tooltip: true,
       mouse_preset: 'default',
+      spin: false,
+      rock: false,
 
       components: [],
 
@@ -81,6 +83,19 @@ export class StageView extends DOMWidgetView {
     );
     this.model.on('msg:custom', this.handle_custom_message.bind(this));
     this.model.on('change:components', this.components_changed, this);
+
+    this.model.on('change:spin', (event: any) => {
+      if (this.stage_obj) {
+        this.stage_obj.setSpin(event.changed.spin);
+      }
+    })
+
+    this.model.on('change:rock', (event: any) => {
+      if (this.stage_obj) {
+        this.stage_obj.setRock(event.changed.rock);
+      }
+    })
+
     this.model.on_some_change([
       'impostor',
       'quality',
@@ -124,7 +139,18 @@ export class StageView extends DOMWidgetView {
 
   handle_custom_message(content: any): void {
     if (this.stage_obj) {
+      switch (content.do) {
+        case 'make-image':
+          this.make_image(content);
+          break;
+      }
     }
+  }
+
+  async make_image(params: any) {
+    const blob: Blob = await this.stage_obj.makeImage(params);
+    this.send({ do: 'make-image', type: blob.type, uuid: params.uuid },
+              [await blob.arrayBuffer()]);
   }
 
   stage_parameters(): any {
@@ -166,6 +192,12 @@ export class StageView extends DOMWidgetView {
 
       this.stage_obj = new NGL.Stage(this.el, this.stage_parameters());
       this.components_changed();
+      if (this.model.get('spin')) {
+        this.stage_obj.setSpin(true);
+      }
+      if (this.model.get('rock')) {
+        this.stage_obj.setRock(true);
+      }
     });
   }
 
