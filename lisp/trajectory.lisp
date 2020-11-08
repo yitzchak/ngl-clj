@@ -11,41 +11,46 @@
      :initarg :value
      :initform :null
      :trait :json)
-   (initial-frame
-     :accessor initial-frame
-     :initarg :initial-frame
+   (frame
+     :accessor frame
+     :initarg :frame
      :initform 0
      :trait :int)
-   (default-step
-     :accessor default-step
-     :initarg :default-step
+   (step
+     :accessor %step
+     :initarg :step
      :initform nil
      :trait :int)
-   (default-timeout
-     :accessor default-timeout
+   (timeout
+     :accessor timeout
      :initarg :default-timeout
-     :initform 0
-     :trait :int)
-   (default-interpolate-type
-     :accessor default-interpolate-type
-     :initarg :default-interpolate-type
-     :initform ""
-     :trait :string)
-   (default-interpolate-step
-     :accessor default-interpolate-step
-     :initarg :default-interpolate-step
      :initform 50
      :trait :int)
-   (default-mode
-     :accessor default-mode
-     :initarg :default-mode
+   (interpolate-type
+     :accessor interpolate-type
+     :initarg :interpolate-type
+     :initform ""
+     :trait :string)
+   (interpolate-step
+     :accessor interpolate-step
+     :initarg :interpolate-step
+     :initform 5
+     :trait :int)
+   (mode
+     :accessor mode
+     :initarg :mode
      :initform "loop"
      :trait :string)
-   (default-direction
-     :accessor default-direction
-     :initarg :default-direction
+   (direction
+     :accessor direction
+     :initarg :direction
      :initform "forward"
-     :trait :string))
+     :trait :string)
+   (is-running
+     :accessor is-running
+     :initarg :is-running
+     :initform nil
+     :trait :bool))
   (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
@@ -59,4 +64,14 @@
 (jupyter-widgets:register-widget trajectory)
 
 
+(defmethod play ((instance trajectory))
+  (setf (is-running instance) t))
+
+
+(defmethod pause ((instance trajectory))
+  (setf (is-running instance) nil))
+
+
+(defmethod stop ((instance trajectory))
+  (setf (is-running instance) nil))
 

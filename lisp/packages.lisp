@@ -21,15 +21,17 @@
     #:color-scheme
     #:component
     #:components
-    #:rock
-    #:trajectory
-    #:trajectories
     #:dihedral
+    #:direction
     #:ext
     #:fog-far
     #:fog-near
+    #:frame
     #:hover-timeout
     #:impostor
+    #:interpolate-step
+    #:interpolate-type
+    #:is-running
     #:label-color
     #:label-size
     #:label-visible
@@ -37,26 +39,36 @@
     #:light-color
     #:light-intensity
     #:measurement
+    #:mode
     #:mouse-preset
     #:name
     #:pan-speed
+    #:pause
+    #:play
     #:position
     #:positions
     #:quality
+    #:quaternion
     #:representation
     #:representations
+    #:rock
     #:rotate-speed
-    #:quaternion
     #:sample-level
     #:scale
     #:sele
     #:sphere-detail
+    #:spin
     #:stage
+    #:%step
+    #:stop
     #:%structure
     #:structure-representation
-    #:spin
+    #:timeout
     #:tooltip
+    #:trajectories
+    #:trajectory
     #:uuid
+    #:value
     #:value
     #:visible
     #:worker-default

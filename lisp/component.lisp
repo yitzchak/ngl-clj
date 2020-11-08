@@ -85,3 +85,16 @@
 (jupyter-widgets:register-widget %structure)
 
 
+(defmethod play ((instance %structure))
+  (dolist (trajectory (trajectories instance) (values))
+    (play trajectory)))
+
+
+(defmethod pause ((instance %structure))
+  (dolist (trajectory (trajectories instance) (values))
+    (pause trajectory)))
+
+
+(defmethod stop ((instance %structure))
+  (dolist (trajectory (trajectories instance) (values))
+    (stop trajectory)))    

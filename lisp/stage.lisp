@@ -186,4 +186,18 @@
                  (first buffers)
                  (jupyter:json-getf content "type"))
         (remhash (jupyter:json-getf content "uuid") (callbacks instance))))))
-    
+
+
+(defmethod play ((instance stage))
+  (dolist (component (components instance) (values))
+    (play component)))
+
+
+(defmethod pause ((instance stage))
+  (dolist (component (components instance) (values))
+    (pause component)))
+
+
+(defmethod stop ((instance stage))
+  (dolist (component (components instance) (values))
+    (stop component)))    

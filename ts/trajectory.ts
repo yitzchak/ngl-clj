@@ -9,9 +9,7 @@ import {
 
 import { MODULE_NAME, MODULE_VERSION } from './version';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const camelCase = require('camelcase');
-
+import { serialize_model } from './utils';
 
 export class TrajectoryModel extends WidgetModel {
   defaults() {
@@ -19,13 +17,14 @@ export class TrajectoryModel extends WidgetModel {
       ...super.defaults(),
 
       name: '',
-      initial_frame: 0,
-      default_step: null,
-      default_timeout: 0,
-      default_interpolate_type: "",
-      default_interpolate_step: 50,
-      default_mode: 'loop',
-      default_direction: 'forward',
+      frame: 0,
+      step: null,
+      timeout: 50,
+      interpolate_type: "",
+      interpolate_step: 5,
+      mode: 'loop',
+      direction: 'forward',
+      is_running: false,
 
       _model_name: 'TrajectoryModel',
       _model_module: MODULE_NAME,
@@ -49,30 +48,49 @@ export class TrajectoryView extends WidgetView {
   initialize(parameters: any): void {
     super.initialize(parameters);
     this.component_obj = this.options.component_obj;
+    this.model.on('change:is_running',
+                  (event: any) => {
+                    if (this.trajectory_obj) {
+                      if (event.changed.is_running) {
+                        if (!this.trajectory_obj.trajectory.player.isRunning) {
+                          this.trajectory_obj.trajectory.player.play();
+                        }
+                      } else {
+                        if (this.trajectory_obj.trajectory.player.isRunning) {
+                          this.trajectory_obj.trajectory.player.pause();
+                        }
+                      }
+                    }
+                  });
+    this.model.on_some_change([
+      'step',
+      'timeout',
+      'interpolate_type',
+      'interpolate_step',
+      'mode',
+      'direction',
+    ], this.update_player_parameters, this);
   }
 
-  parameter_names(): Array<string> {
-    return ['initial_frame', 'default_step',
-                                           'default_timeout',
-                                           'default_interpolate_type',
-                                           'default_interpolate_step',
-                                           'default_mode', 'default_direction'];
+  update_player_parameters(): void {
+    if (this.trajectory_obj) {
+      const params = serialize_model(this.model,
+                                     { 'step': null, 'timeout': null,
+                                       'interpolateType': null,
+                                       'interpolateStep': null,
+                                       'mode': null,
+                                       'direction': null });
+      this.trajectory_obj.trajectory.player.setParameters(params);
+    }
   }
 
   get_parameters(): any {
-    var params: any = {};
-
-    for (const name of this.parameter_names()) {
-      var value: any = this.model.get(name);
-      if (value != null) {
-        params[camelCase(name)] = value;
-      }
-    }
-
-    return params;
+    return serialize_model(this.model, { 'name': null });
   }
 
   wire_view(): void {
+    this.update_player_parameters();
+
     if (this.trajectory_obj.name != this.model.get('name')) {
       this.model.set('name', this.trajectory_obj.name);
       this.model.save_changes();
@@ -91,10 +109,6 @@ export class TrajectoryView extends WidgetView {
       var value: any = this.model.get('value');
       this.trajectory_obj = await this.component_obj.addTrajectory(value, this.get_parameters());
   	  this.wire_view();
-  	  //console.log(this.trajectory_obj.trajectory.player);
-  	  this.trajectory_obj.trajectory.player.interpolateType = 'spline';
-  	  this.trajectory_obj.trajectory.player.interpolateStep = 50;
-  	  this.trajectory_obj.trajectory.player.play();
     }
   }
 

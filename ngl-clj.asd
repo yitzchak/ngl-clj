@@ -11,6 +11,7 @@
       :components
         ((:file "packages")
          (:file "version")
+         (:file "interface")
          (:file "representation")
          (:file "trajectory")
          (:file "component")
