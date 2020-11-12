@@ -36,6 +36,7 @@
     #:label-size
     #:label-visible
     #:label-z-offset
+    #:licorice
     #:light-color
     #:light-intensity
     #:measurement

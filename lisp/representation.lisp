@@ -66,6 +66,16 @@
 (jupyter-widgets:register-widget base)
 
 
+(defclass licorice (ball-and-stick)
+  ()
+  (:metaclass jupyter-widgets:trait-metaclass)
+  (:documentation "")
+  (:default-initargs
+    :%model-name "LicoriceModel"))
+
+(jupyter-widgets:register-widget licorice)
+
+
 (defclass measurement (representation)
   ((label-size
      :accessor label-size

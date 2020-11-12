@@ -139,6 +139,18 @@ export class BaseModel extends BallAndStickModel {
 }
 
 
+export class LicoriceModel extends BallAndStickModel {
+  defaults() {
+    return {
+      ...super.defaults(),
+
+      _type: 'licorice',
+      _model_name: 'LicoriceModel'
+    };
+  }
+}
+
+
 export class MeasurementRepresentationModel extends RepresentationModel {
   defaults() {
     return {
