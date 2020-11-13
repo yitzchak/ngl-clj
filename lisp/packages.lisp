@@ -27,6 +27,7 @@
     #:fog-far
     #:fog-near
     #:frame
+    #:fullscreen
     #:hover-timeout
     #:impostor
     #:interpolate-step
@@ -43,6 +44,8 @@
     #:mode
     #:mouse-preset
     #:name
+    #:on-pick
+    #:on-stage-pick
     #:pan-speed
     #:pause
     #:play
@@ -62,7 +65,7 @@
     #:stage
     #:%step
     #:stop
-    #:%structure
+    #:structure
     #:structure-representation
     #:timeout
     #:tooltip

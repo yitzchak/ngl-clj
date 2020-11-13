@@ -141,6 +141,15 @@
      :initarg :spin
      :initform nil
      :trait :bool)
+   (fullscreen
+     :accessor fullscreen
+     :initarg :fullscreen
+     :initform nil
+     :trait :bool)
+   (on-pick
+     :accessor on-pick
+     :initarg :on-pick
+     :initform nil)
    (callbacks-lock
      :accessor callbacks-lock)
    (callbacks
@@ -201,3 +210,17 @@
 (defmethod stop ((instance stage))
   (dolist (component (components instance) (values))
     (stop component)))    
+
+
+(defun on-stage-pick (instance handler)
+  (push handler (on-pick instance)))
+
+
+(defmethod jupyter-widgets:on-custom-message ((instance stage) content buffers)
+  (declare (ignore buffers))
+  (if (equal "pick" (jupyter:json-getf content "event"))
+    (let ((data (jupyter:json-to-nested-plist (jupyter:json-getf content "data") :symbol-case :snake)))
+      (dolist (handler (on-pick instance))
+              ()
+        (funcall handler instance data)))
+    (call-next-method)))

@@ -17,6 +17,8 @@ import '../css/widget.css';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const NGL = require('ngl');
 
+import { snake_object } from './utils';
+
 
 export class StageModel extends DOMWidgetModel {
   defaults() {
@@ -38,6 +40,7 @@ export class StageModel extends DOMWidgetModel {
       clip_scale: 'relative',
       fog_near: 50,
       fog_far: 100,
+      fullscreen: false,
       camera_fov: 40,
       camera_eye_sep: 0.3,
       camera_type: 'perspective',
@@ -68,6 +71,18 @@ export class StageModel extends DOMWidgetModel {
   };
 }
 
+function atom_proxy_to_object(atom: any): any {
+  return snake_object(atom.toObject());
+}
+
+function bond_proxy_to_object(bond: any): any {
+  return {
+    atom1: atom_proxy_to_object(bond.atom1),
+    atom2: atom_proxy_to_object(bond.atom2),
+    ...snake_object(bond.toObject())
+  };
+}
+
 export class StageView extends DOMWidgetView {
   stage_obj: any;
   componentViews: any;
@@ -83,6 +98,12 @@ export class StageView extends DOMWidgetView {
     );
     this.model.on('msg:custom', this.handle_custom_message.bind(this));
     this.model.on('change:components', this.components_changed, this);
+
+    this.model.on('change:fullscreen', () => {
+      if (this.stage_obj) {
+        this.stage_obj.toggleFullscreen();
+      }
+    });
 
     this.model.on('change:spin', (event: any) => {
       if (this.stage_obj) {
@@ -143,6 +164,9 @@ export class StageView extends DOMWidgetView {
         case 'make-image':
           this.make_image(content);
           break;
+        case 'auto_view':
+          this.stage_obj.autoView(content.duration || 0);
+          break;
       }
     }
   }
@@ -198,7 +222,64 @@ export class StageView extends DOMWidgetView {
       if (this.model.get('rock')) {
         this.stage_obj.setRock(true);
       }
+      this.stage_obj.signals.fullscreenChanged.add((value: boolean) => {
+        this.model.set('fullscreen', value);
+        this.model.save_changes();
+      });
+      this.stage_obj.signals.clicked.add((picked: any) => this.on_pick('click', picked));
+      this.stage_obj.signals.hovered.add((picked: any) => this.on_pick('hover', picked));
     });
+  }
+
+  on_pick(signal: string, picked: any): void {
+    var data: any = {
+      type: null,
+      signal
+    };
+
+    if (picked) {
+      data.type = picked.type;
+      data.alt_key = picked.altKey;
+      data.ctrl_key = picked.ctrlKey;
+      data.meta_key = picked.metaKey;
+      data.shift_key = picked.shiftKey;
+
+      if (picked.atom) {
+        data.atom = snake_object(picked.atom.toObject());
+      }
+
+      if (picked.bond) {
+        data.bond = snake_object(picked.bond.toObject());
+        data.bond.atom1 = snake_object(picked.bond.atom1.toObject());
+        data.bond.atom2 = snake_object(picked.bond.atom2.toObject());
+      }
+
+      if (picked.closestBondAtom) {
+        data.closest_bond_atom = snake_object(picked.closestBondAtom.toObject());
+      }
+
+      if (picked.component) {
+        data.component = picked.component.name;
+      }
+
+      if (picked.contact) {
+        data.contact = snake_object(picked.contact.toObject());
+        data.contact.atom1 = snake_object(picked.contact.atom1.toObject());
+        data.contact.atom2 = snake_object(picked.contact.atom2.toObject());
+      }
+
+      if (picked.distance) {
+        data.distance = snake_object(picked.distance.toObject());
+        data.distance.atom1 = snake_object(picked.distance.atom1.toObject());
+        data.distance.atom2 = snake_object(picked.distance.atom2.toObject());
+      }
+
+      if (picked.position) {
+        data.position = snake_object(picked.position);
+      }
+    }
+
+    this.send({ event: 'pick', data });
   }
 
   setParameters(): void {

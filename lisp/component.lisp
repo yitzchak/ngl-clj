@@ -40,14 +40,7 @@
     :%view-module-version +module-version+))
 
 
-(defun auto-view (component &optional (duration 0))
-  (jupyter-widgets:send-custom component
-                               (jupyter:json-new-obj
-                                 ("do" "auto_view")
-                                 ("duration" duration))))
-
-
-(defclass %structure (component)
+(defclass structure (component)
   ((ext
      :accessor ext
      :initarg :ext
@@ -82,19 +75,19 @@
                            (make-instance 'base)
                            (make-instance 'ball-and-stick :sele "ligand"))))
 
-(jupyter-widgets:register-widget %structure)
+(jupyter-widgets:register-widget structure)
 
 
-(defmethod play ((instance %structure))
+(defmethod play ((instance structure))
   (dolist (trajectory (trajectories instance) (values))
     (play trajectory)))
 
 
-(defmethod pause ((instance %structure))
+(defmethod pause ((instance structure))
   (dolist (trajectory (trajectories instance) (values))
     (pause trajectory)))
 
 
-(defmethod stop ((instance %structure))
+(defmethod stop ((instance structure))
   (dolist (trajectory (trajectories instance) (values))
     (stop trajectory)))    

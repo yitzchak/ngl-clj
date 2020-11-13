@@ -15,3 +15,14 @@ export function serialize_model(model: any, object: any): any {
 }
 
 
+export function snake_object(object: any): any {
+  var result: any = {};
+
+  for (const [key, value] of Object.entries(object)) {
+    result[snake(key)] = value;
+  }
+
+  return result;
+}
+
+  
