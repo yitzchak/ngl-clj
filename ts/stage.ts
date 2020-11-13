@@ -173,7 +173,7 @@ export class StageView extends DOMWidgetView {
 
   async make_image(params: any) {
     const blob: Blob = await this.stage_obj.makeImage(params);
-    this.send({ do: 'make-image', type: blob.type, uuid: params.uuid },
+    this.send({ event: 'image', type: blob.type, uuid: params.uuid },
               [await blob.arrayBuffer()]);
   }
 

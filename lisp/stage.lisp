@@ -188,13 +188,20 @@
 
 
 (defmethod jupyter-widgets:on-custom-message ((instance stage) content buffers)
-  (alexandria:switch ((jupyter:json-getf content "do") :test #'string=)
-    ("make-image"
+  (alexandria:switch ((jupyter:json-getf content "event") :test #'string=)
+    ("image"
       (bordeaux-threads:with-lock-held ((callbacks-lock instance))
         (funcall (gethash (jupyter:json-getf content "uuid") (callbacks instance))
                  (first buffers)
                  (jupyter:json-getf content "type"))
-        (remhash (jupyter:json-getf content "uuid") (callbacks instance))))))
+        (remhash (jupyter:json-getf content "uuid") (callbacks instance))))
+    ("pick"
+      (let ((data (jupyter:json-to-nested-plist (jupyter:json-getf content "data") :symbol-case :snake)))
+        (dolist (handler (on-pick instance))
+                ()
+          (funcall handler instance data))))
+    (otherwise
+      (call-next-method))))
 
 
 (defmethod play ((instance stage))
@@ -215,12 +222,3 @@
 (defun on-stage-pick (instance handler)
   (push handler (on-pick instance)))
 
-
-(defmethod jupyter-widgets:on-custom-message ((instance stage) content buffers)
-  (declare (ignore buffers))
-  (if (equal "pick" (jupyter:json-getf content "event"))
-    (let ((data (jupyter:json-to-nested-plist (jupyter:json-getf content "data") :symbol-case :snake)))
-      (dolist (handler (on-pick instance))
-              ()
-        (funcall handler instance data)))
-    (call-next-method)))
