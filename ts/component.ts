@@ -95,7 +95,8 @@ export class ComponentView extends WidgetView {
   positions_changed() {
     var positions: any = this.model.get('positions');
     if (positions) {
-      this.component_obj.updatePosition(positions);
+      this.component_obj.structure.updatePosition(positions);
+      this.component_obj.updateRepresentations({ position: true });
     }
   }
 

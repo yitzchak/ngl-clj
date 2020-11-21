@@ -25,36 +25,36 @@ export class StageModel extends DOMWidgetModel {
     return {
       ...super.defaults(),
 
-      impostor: true,
-      quality: 'medium',
-      worker_default: true,
-      sample_level: 0,
-      background_color: 'black',
-      rotate_speed: 2.0,
-      zoom_zpeed: 1.2,
-      pan_speed: 1.0,
-      clip_near: 0,
-      clip_far: 100,
-      clip_dist: 10,
-      clip_mode: 'scene',
-      clip_scale: 'relative',
-      fog_near: 50,
-      fog_far: 100,
-      fullscreen: false,
-      camera_fov: 40,
-      camera_eye_sep: 0.3,
-      camera_type: 'perspective',
-      light_color: '#dddddd',
-      light_intensity: 1.0,
       ambient_color: '#dddddd',
       ambient_intensity: 0.2,
-      hover_timeout: 0,
-      tooltip: true,
-      mouse_preset: 'default',
-      spin: false,
-      rock: false,
-
+      background_color: 'black',
+      camera_eye_sep: 0.3,
+      camera_fov: 40,
+      camera_type: 'perspective',
+      clip_dist: 10,
+      clip_far: 100,
+      clip_mode: 'scene',
+      clip_near: 0,
+      clip_scale: 'relative',
       components: [],
+      fog_far: 100,
+      fog_near: 50,
+      fullscreen: false,
+      hover_timeout: 0,
+      impostor: true,
+      light_color: '#dddddd',
+      light_intensity: 1.0,
+      mouse_preset: 'default',
+      pan_speed: 1.0,
+      pick_filter: ["click"],
+      quality: 'medium',
+      rock: false,
+      rotate_speed: 2.0,
+      sample_level: 0,
+      spin: false,
+      tooltip: true,
+      worker_default: true,
+      zoom_zpeed: 1.2,
 
       _model_name: 'StageModel',
       _model_module: MODULE_NAME,
@@ -232,6 +232,8 @@ export class StageView extends DOMWidgetView {
   }
 
   on_pick(signal: string, picked: any): void {
+    if (!this.model.get('pick_filter').includes(signal)) return;
+
     var data: any = {
       type: null,
       signal
@@ -245,17 +247,15 @@ export class StageView extends DOMWidgetView {
       data.shift_key = picked.shiftKey;
 
       if (picked.atom) {
-        data.atom = snake_object(picked.atom.toObject());
+        data.atom = atom_proxy_to_object(picked.atom);
       }
 
       if (picked.bond) {
-        data.bond = snake_object(picked.bond.toObject());
-        data.bond.atom1 = snake_object(picked.bond.atom1.toObject());
-        data.bond.atom2 = snake_object(picked.bond.atom2.toObject());
+        data.bond = bond_proxy_to_object(picked.bond);
       }
 
       if (picked.closestBondAtom) {
-        data.closest_bond_atom = snake_object(picked.closestBondAtom.toObject());
+        data.closest_bond_atom = atom_proxy_to_object(picked.closestBondAtom);
       }
 
       if (picked.component) {
@@ -263,15 +263,11 @@ export class StageView extends DOMWidgetView {
       }
 
       if (picked.contact) {
-        data.contact = snake_object(picked.contact.toObject());
-        data.contact.atom1 = snake_object(picked.contact.atom1.toObject());
-        data.contact.atom2 = snake_object(picked.contact.atom2.toObject());
+        data.contact = bond_proxy_to_object(picked.contact);
       }
 
       if (picked.distance) {
-        data.distance = snake_object(picked.distance.toObject());
-        data.distance.atom1 = snake_object(picked.distance.atom1.toObject());
-        data.distance.atom2 = snake_object(picked.distance.atom2.toObject());
+        data.distance = bond_proxy_to_object(picked.distance);
       }
 
       if (picked.position) {

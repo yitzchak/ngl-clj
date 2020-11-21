@@ -6,6 +6,7 @@
     #:ambient-intensity
     #:atom-quad
     #:auto-view
+    #:backbone
     #:background-color
     #:ball-and-stick
     #:base
@@ -40,6 +41,7 @@
     #:licorice
     #:light-color
     #:light-intensity
+    #:line
     #:measurement
     #:mode
     #:mouse-preset
@@ -48,6 +50,7 @@
     #:on-stage-pick
     #:pan-speed
     #:pause
+    #:pick-filter
     #:play
     #:position
     #:positions
@@ -55,11 +58,13 @@
     #:quaternion
     #:representation
     #:representations
+    #:ribbon
     #:rock
     #:rotate-speed
     #:sample-level
     #:scale
     #:sele
+    #:spacefill
     #:sphere-detail
     #:spin
     #:stage
@@ -67,10 +72,12 @@
     #:stop
     #:structure
     #:structure-representation
+    #:surface
     #:timeout
     #:tooltip
     #:trajectories
     #:trajectory
+    #:use-worker
     #:uuid
     #:value
     #:value

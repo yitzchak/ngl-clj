@@ -146,6 +146,11 @@
      :initarg :fullscreen
      :initform nil
      :trait :bool)
+   (pick-filter
+     :accessor pick-filter
+     :initarg :pick-filter
+     :initform (list "click")
+     :trait :json)
    (on-pick
      :accessor on-pick
      :initarg :on-pick

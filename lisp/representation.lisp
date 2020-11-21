@@ -56,6 +56,16 @@
 (jupyter-widgets:register-widget ball-and-stick)
 
 
+(defclass backbone (ball-and-stick)
+  ()
+  (:metaclass jupyter-widgets:trait-metaclass)
+  (:documentation "")
+  (:default-initargs
+    :%model-name "BackboneModel"))
+
+(jupyter-widgets:register-widget backbone)
+
+
 (defclass base (ball-and-stick)
   ()
   (:metaclass jupyter-widgets:trait-metaclass)
@@ -74,6 +84,17 @@
     :%model-name "LicoriceModel"))
 
 (jupyter-widgets:register-widget licorice)
+
+
+(defclass line (structure-representation)
+  ()
+  (:metaclass jupyter-widgets:trait-metaclass)
+  (:documentation "")
+  (:default-initargs
+    :color-scheme "element"
+    :%model-name "LineModel"))
+
+(jupyter-widgets:register-widget line)
 
 
 (defclass measurement (representation)
@@ -111,4 +132,38 @@
   (:documentation ""))
 
 (jupyter-widgets:register-widget dihedral)
+
+
+(defclass ribbon (structure-representation)
+  ()
+  (:metaclass jupyter-widgets:trait-metaclass)
+  (:documentation "")
+  (:default-initargs
+    :%model-name "RibbonModel"))
+
+(jupyter-widgets:register-widget ribbon)
+
+
+(defclass spacefill (structure-representation)
+  ()
+  (:metaclass jupyter-widgets:trait-metaclass)
+  (:documentation "")
+  (:default-initargs
+    :%model-name "SpacefillModel"))
+
+(jupyter-widgets:register-widget spacefill)
+
+
+(defclass surface (representation)
+  ((use-worker
+     :accessor use-worker
+     :initarg :use-worker
+     :initform nil
+     :trait :bool))
+  (:metaclass jupyter-widgets:trait-metaclass)
+  (:documentation "")
+  (:default-initargs
+    :%model-name "SurfaceModel"))
+
+(jupyter-widgets:register-widget surface)
 

@@ -127,6 +127,18 @@ export class BallAndStickModel extends StructureRepresentationModel {
 }
 
 
+export class BackboneModel extends BallAndStickModel {
+  defaults() {
+    return {
+      ...super.defaults(),
+
+      _type: 'backbone',
+      _model_name: 'BackboneModel'
+    };
+  }
+}
+
+
 export class BaseModel extends BallAndStickModel {
   defaults() {
     return {
@@ -146,6 +158,18 @@ export class LicoriceModel extends BallAndStickModel {
 
       _type: 'licorice',
       _model_name: 'LicoriceModel'
+    };
+  }
+}
+
+
+export class LineModel extends StructureRepresentationModel {
+  defaults() {
+    return {
+      ...super.defaults(),
+
+      _type: 'line',
+      _model_name: 'LineModel'
     };
   }
 }
@@ -174,4 +198,44 @@ export class DihedralModel extends MeasurementRepresentationModel {
     };
   }
 }
+
+
+export class RibbonModel extends StructureRepresentationModel {
+  defaults() {
+    return {
+      ...super.defaults(),
+
+      _type: 'ribbon',
+      _model_name: 'RibbonModel'
+    };
+  }
+}
+
+
+export class SpacefillModel extends StructureRepresentationModel {
+  defaults() {
+    return {
+      ...super.defaults(),
+
+      _type: 'spacefill',
+      _model_name: 'SpacefillModel'
+    };
+  }
+}
+
+
+export class SurfaceModel extends RepresentationModel {
+  defaults() {
+    return {
+      ...super.defaults(),
+
+      use_worker: false,
+
+      _type: 'surface',
+      _model_name: 'SurfaceModel'
+    };
+  }
+}
+
+
 
