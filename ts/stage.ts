@@ -17,7 +17,7 @@ import '../css/widget.css';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const NGL = require('ngl');
 
-import { snake_object } from './utils';
+import { snake_object, ViewSet } from './utils';
 
 
 export class StageModel extends DOMWidgetModel {
@@ -91,7 +91,7 @@ export class StageView extends DOMWidgetView {
 
   initialize(parameters: any): void {
     super.initialize(parameters);
-    this.componentViews = new widgets.ViewList(
+    this.componentViews = new ViewSet(
       this.create_ngl_child_view,
       this.remove_ngl_child_view,
       this
@@ -291,7 +291,7 @@ export class StageView extends DOMWidgetView {
     }
   }
 
-  create_ngl_child_view(model: any, index: any) {
+  create_ngl_child_view(model: any) {
     return this.create_child_view(model, {
       stage_obj: this.stage_obj
     });

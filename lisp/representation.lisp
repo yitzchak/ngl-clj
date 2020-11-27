@@ -129,7 +129,9 @@
      :initform nil
      :trait :list))
   (:metaclass jupyter-widgets:trait-metaclass)
-  (:documentation ""))
+  (:documentation "")
+  (:default-initargs
+    :%model-name "DihedralModel"))
 
 (jupyter-widgets:register-widget dihedral)
 
@@ -149,6 +151,7 @@
   (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
+    :color-scheme "element"
     :%model-name "SpacefillModel"))
 
 (jupyter-widgets:register-widget spacefill)

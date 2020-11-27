@@ -91,3 +91,14 @@
 (defmethod stop ((instance structure))
   (dolist (trajectory (trajectories instance) (values))
     (stop trajectory)))    
+
+
+(defun update-position (instance coordinates)
+  (jupyter-widgets:send-custom instance
+                               (jupyter:json-new-obj
+                                 ("do" "update_position"))
+                               (list coordinates))
+  (values))
+
+
+

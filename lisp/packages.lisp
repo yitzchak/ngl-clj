@@ -77,6 +77,7 @@
     #:tooltip
     #:trajectories
     #:trajectory
+    #:update-position
     #:use-worker
     #:uuid
     #:value

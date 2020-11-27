@@ -12,6 +12,8 @@ import { MODULE_NAME, MODULE_VERSION } from './version';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const camelCase = require('camelcase');
 
+import { ViewSet } from './utils';
+
 
 export class ComponentModel extends WidgetModel {
   defaults() {
@@ -40,7 +42,7 @@ export class ComponentModel extends WidgetModel {
 
 export class ComponentView extends WidgetView {
   stage_obj: any;
-  component_obj: any;
+  component_obj: Promise<any> | null = null;
   representationViews: any;
   in_representations_changing = false;
   rendered = false;
@@ -49,7 +51,7 @@ export class ComponentView extends WidgetView {
     super.initialize(parameters);
     this.stage_obj = this.options.stage_obj;
 
-    this.representationViews = new widgets.ViewList(
+    this.representationViews = new ViewSet(
       this.create_ngl_child_view,
       this.remove_ngl_child_view,
       this
@@ -58,19 +60,19 @@ export class ComponentView extends WidgetView {
     this.model.on('change:representations', this.representations_changed, this);
     this.model.on('change:visible', this.visible_changed.bind(this));
     this.model.on('change:positions', this.positions_changed, this);
-    this.model.on('change:name', (event: any) => {
+    this.model.on('change:name', async (event: any) => {
       if (this.component_obj) {
-        this.component_obj.setName(event.changed.name);
+        (await this.component_obj).setName(event.changed.name);
       }
     });
-    this.model.on('change:scale', (event: any) => {
+    this.model.on('change:scale', async (event: any) => {
       if (this.component_obj) {
-        this.component_obj.setScale(event.changed.scale);
+        (await this.component_obj).setScale(event.changed.scale);
       }
     });
-    this.model.on('change:quaternion', (event: any) => {
+    this.model.on('change:quaternion', async (event: any) => {
       if (this.component_obj) {
-        this.component_obj.setRotation(event.changed.quaternion);
+        (await this.component_obj).setRotation(event.changed.quaternion);
       }
     });
   }
@@ -92,11 +94,12 @@ export class ComponentView extends WidgetView {
     return params;
   }
 
-  positions_changed() {
+  async positions_changed() {
     var positions: any = this.model.get('positions');
+    let component_obj = await this.component_obj;
     if (positions) {
-      this.component_obj.structure.updatePosition(positions);
-      this.component_obj.updateRepresentations({ position: true });
+      component_obj.structure.updatePosition((positions instanceof DataView) ? new Float32Array(positions.buffer) : positions);
+      component_obj.updateRepresentations({ position: true });
     }
   }
 
@@ -112,42 +115,48 @@ export class ComponentView extends WidgetView {
     this.in_representations_changing = false;
   }
 
-  visible_changed() {
+  async visible_changed() {
     if (this.component_obj) {
-      this.component_obj.setVisibility(this.model.get('visible'));
+      (await this.component_obj).setVisibility(this.model.get('visible'));
     }
   }
 
-  handle_custom_message(content: any, buffers: any): void {
+  async handle_custom_message(content: any, buffers: DataView[]): Promise<void> {
     if (this.component_obj) {
       switch (content.do) {
         case 'auto_view':
-          this.component_obj.autoView(content.duration || 0);
+          (await this.component_obj).autoView(content.duration || 0);
+          break;
+        case 'update_position':
+          (await this.component_obj).structure.updatePosition(new Float32Array(buffers[0].buffer));
+          (await this.component_obj).updateRepresentations({ position: true });
           break;
       }
     }
   }
 
-  wire_component(): void {
+  async wire_component(): Promise<void> {
 	  this.representations_changed();
 
-    if (this.component_obj.name != this.model.get('name')) {
-      this.model.set('name', this.component_obj.name);
+	  let component_obj = await this.component_obj;
+
+    if (component_obj.name != this.model.get('name')) {
+      this.model.set('name', component_obj.name);
       this.model.save_changes();
     }
 
-    this.component_obj.setScale(this.model.get('scale'));
+    component_obj.setScale(this.model.get('scale'));
 
-    this.component_obj.signals.nameChanged.add((name: string): void => {
+    component_obj.signals.nameChanged.add((name: string): void => {
       this.model.set('name', name);
       this.model.save_changes();
     });
   }
 
-  create_ngl_child_view(model: any, index: any) {
+  async create_ngl_child_view(model: any) {
     return this.create_child_view(model, {
       stage_obj: this.stage_obj,
-      component_obj: this.component_obj
+      component_obj: await this.component_obj
     });
   }
 
@@ -183,7 +192,7 @@ export class StructureView extends ComponentView {
 
   initialize(parameters: any): void {
     super.initialize(parameters);
-    this.trajectory_views = new widgets.ViewList(
+    this.trajectory_views = new ViewSet(
       this.create_ngl_child_view,
       this.remove_ngl_child_view,
       this
@@ -203,27 +212,34 @@ export class StructureView extends ComponentView {
     }
   }
 
+  async load_file(): Promise<any> {
+    var value: any = this.model.get('value');
+
+    if (this.model.get('ext')) {
+    	value = new Blob([value],
+    	                 { type: (typeof value === 'string' || value instanceof String)
+    	                            ? 'text/plain'
+    	                            : 'application/octet-binary' });
+    }
+
+    return this.stage_obj.loadFile(value, this.get_parameters());
+  }
+
   async render() {
-    super.render();
-    if (this.stage_obj && !this.component_obj && !this.rendered) {
-      this.rendered = true;
-      var value: any = this.model.get('value');
-      if (this.model.get('ext')) {
-      	value = new Blob([value],
-      	                 { type: (typeof value === 'string' || value instanceof String)
-      	                            ? 'text/plain'
-      	                            : 'application/octet-binary' });
-      }
-      this.component_obj = await this.stage_obj.loadFile(value, this.get_parameters());
+    if (!this.component_obj) {
+      console.log("render structure " + this.cid);
+      super.render();
+      this.component_obj = this.load_file();
   	  this.change_trajectories();
   	  this.wire_component();
     }
   }
 
-  remove() {
+  async remove() {
     super.remove();
     if (this.stage_obj && this.component_obj) {
-      this.stage_obj.removeComponent(this.component_obj);
+      console.log("remove structure " + this.cid);
+      this.stage_obj.removeComponent(await this.component_obj);
       this.component_obj = null;
     }
   }

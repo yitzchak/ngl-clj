@@ -22,6 +22,11 @@ export class RepresentationModel extends WidgetModel {
       ...super.defaults(),
 
       color_scheme: "chainname",
+      color_scale: '',
+      color_reverse: false,
+      color_value: 0x909090,
+      color_domain: undefined,
+      color_mode: 'hcl',
       visible: true,
 
       _type: "",
@@ -68,12 +73,14 @@ export class RepresentationView extends WidgetView {
   parameters_changed() {
     if (this.representation_obj) {
      this.representation_obj.setParameters(this.get_parameters());
+     this.representation_obj.build();
     }
   }
 
   render() {
     super.render();
     if (this.component_obj && !this.representation_obj) {
+      console.log('render ' + this.model.get('_type') + ' ' + this.cid);
       this.representation_obj =
         this.component_obj.addRepresentation(this.model.get('_type'),
                                              this.get_parameters());
@@ -83,6 +90,7 @@ export class RepresentationView extends WidgetView {
   remove() {
     super.remove();
     if (this.component_obj && this.representation_obj) {
+      console.log('remove ' + this.model.get('_type') + ' ' + this.cid);
       this.component_obj.removeRepresentation(this.representation_obj);
       this.representation_obj = null;
     }
@@ -194,7 +202,10 @@ export class DihedralModel extends MeasurementRepresentationModel {
     return {
       ...super.defaults(),
 
-      atom_quad: []
+      atom_quad: [],
+
+      _type: 'dihedral',
+      _model_name: 'DihedralModel'
     };
   }
 }
