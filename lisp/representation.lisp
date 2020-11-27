@@ -6,6 +6,10 @@
      :initarg :color-scheme
      :initform "chainname"
      :trait :string)
+   (name
+     :accessor name
+     :initarg :name
+     :trait :string)
    (visible
      :accessor visible
      :initarg :visible

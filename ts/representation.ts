@@ -27,6 +27,7 @@ export class RepresentationModel extends WidgetModel {
       color_value: 0x909090,
       color_domain: undefined,
       color_mode: 'hcl',
+      name: null,
       visible: true,
 
       _type: "",
@@ -56,8 +57,8 @@ export class RepresentationView extends WidgetView {
   }
 
   visible_changed() {
-    if (this.component_obj) {
-      this.component_obj.setVisibility(this.model.get('visible'));
+    if (this.representation_obj) {
+      this.representation_obj.setVisibility(this.model.get('visible'));
     }
   }
 
