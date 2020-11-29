@@ -83,6 +83,22 @@ function bond_proxy_to_object(bond: any): any {
   };
 }
 
+function tooltip_pick (stage: any, pickingProxy: any) {
+  console.log(pickingProxy);
+  const tt = stage.tooltip;
+  const sp = stage.getParameters() as any;
+  if (sp.tooltip && pickingProxy) {
+    const mp = pickingProxy.mouse.position;
+    const rect = pickingProxy.mouse.domElement.getBoundingClientRect();
+    tt.innerText = pickingProxy.getLabel();
+    tt.style.bottom = (rect.bottom - mp.y + 3) + 'px';
+    tt.style.left = (mp.x - rect.left + 3) + 'px';
+    tt.style.display = 'block';
+  } else {
+    tt.style.display = 'none';
+  }
+}
+
 export class StageView extends DOMWidgetView {
   stage_obj: any;
   componentViews: any;
@@ -215,6 +231,8 @@ export class StageView extends DOMWidgetView {
       this.el.setAttribute('data-jp-suppress-context-menu', '');
 
       this.stage_obj = new NGL.Stage(this.el, this.stage_parameters());
+      this.stage_obj.mouseControls.remove('hoverPick');
+      this.stage_obj.mouseControls.add('hoverPick', tooltip_pick);
       this.components_changed();
       if (this.model.get('spin')) {
         this.stage_obj.setSpin(true);
