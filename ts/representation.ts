@@ -81,7 +81,6 @@ export class RepresentationView extends WidgetView {
   render() {
     super.render();
     if (this.component_obj && !this.representation_obj) {
-      console.log('render ' + this.model.get('_type') + ' ' + this.cid);
       this.representation_obj =
         this.component_obj.addRepresentation(this.model.get('_type'),
                                              this.get_parameters());
@@ -91,7 +90,6 @@ export class RepresentationView extends WidgetView {
   remove() {
     super.remove();
     if (this.component_obj && this.representation_obj) {
-      console.log('remove ' + this.model.get('_type') + ' ' + this.cid);
       this.component_obj.removeRepresentation(this.representation_obj);
       this.representation_obj = null;
     }

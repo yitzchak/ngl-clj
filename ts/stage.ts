@@ -84,7 +84,6 @@ function bond_proxy_to_object(bond: any): any {
 }
 
 function tooltip_pick (stage: any, pickingProxy: any) {
-  console.log(pickingProxy);
   const tt = stage.tooltip;
   const sp = stage.getParameters() as any;
   if (sp.tooltip && pickingProxy) {

@@ -227,7 +227,6 @@ export class StructureView extends ComponentView {
 
   async render() {
     if (!this.component_obj) {
-      console.log("render structure " + this.cid);
       super.render();
       this.component_obj = this.load_file();
   	  this.change_trajectories();
@@ -238,7 +237,6 @@ export class StructureView extends ComponentView {
   async remove() {
     super.remove();
     if (this.stage_obj && this.component_obj) {
-      console.log("remove structure " + this.cid);
       this.stage_obj.removeComponent(await this.component_obj);
       this.component_obj = null;
     }
