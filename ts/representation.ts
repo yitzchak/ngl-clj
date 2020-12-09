@@ -21,14 +21,37 @@ export class RepresentationModel extends WidgetModel {
     return {
       ...super.defaults(),
 
-      color_scheme: "chainname",
-      color_scale: '',
-      color_reverse: false,
-      color_value: 0x909090,
+      clip_center: [0, 0, 0],
+      clip_near: 0,
+      clip_radius: 0,
       color_domain: undefined,
       color_mode: 'hcl',
+      color_reverse: false,
+      color_scale: '',
+      color_scheme: "chainname",
+      color_value: 0x909090,
+      depth_write: true,
+      diffuse: 0xffffff,
+      diffuse_interior: false,
+      disable_impostor: false,
+      disable_picking: false,
+      flat_shaded: false,
+      interior_color: 0x222222,
+      interior_darkening: 0,
+      lazy: false,
+      matrix: [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]],
+      metalness: 0.0,
       name: null,
+      opacity: 1.0,
+      open_ended: true,
+      quality: undefined,
+      radial_segments: 10,
+      roughness: 0.4,
+      side: 'double',
+      sphere_detail: 1,
+      use_interior_color: false,
       visible: true,
+      wireframe: false,
 
       _type: "",
       _model_module: MODULE_NAME,
@@ -93,6 +116,18 @@ export class RepresentationView extends WidgetView {
       this.component_obj.removeRepresentation(this.representation_obj);
       this.representation_obj = null;
     }
+  }
+}
+
+
+export class BufferRepresentationModel extends RepresentationModel {
+  defaults() {
+    return {
+      ...super.defaults(),
+
+      _type: 'buffer',
+      _model_name: 'BufferRepresentationModel'
+    };
   }
 }
 

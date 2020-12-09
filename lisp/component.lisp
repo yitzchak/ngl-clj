@@ -101,4 +101,16 @@
   (values))
 
 
+(defclass shape (component)
+  ((primitives
+    :accessor primitives
+    :initarg :primitives
+    :initform nil
+    :trait :plist-list-snake-case))
+  (:metaclass jupyter-widgets:trait-metaclass)
+  (:documentation "")
+  (:default-initargs
+    :%model-name "ShapeModel"
+    :%view-name "ShapeView"
+    :representations (list (make-instance 'buffer-representation))))
 

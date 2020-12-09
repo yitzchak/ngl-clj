@@ -10,6 +10,9 @@ const widgets = require('@jupyter-widgets/base');
 import { MODULE_NAME, MODULE_VERSION } from './version';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
+const NGL = require('ngl');
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const camelCase = require('camelcase');
 
 import { ViewSet } from './utils';
@@ -153,6 +156,14 @@ export class ComponentView extends WidgetView {
     });
   }
 
+  async remove() {
+    super.remove();
+    if (this.stage_obj && this.component_obj) {
+      this.stage_obj.removeComponent(await this.component_obj);
+      this.component_obj = null;
+    }
+  }
+
   async create_ngl_child_view(model: any) {
     return this.create_child_view(model, {
       stage_obj: this.stage_obj,
@@ -233,12 +244,80 @@ export class StructureView extends ComponentView {
   	  this.wire_component();
     }
   }
+}
 
-  async remove() {
-    super.remove();
-    if (this.stage_obj && this.component_obj) {
-      this.stage_obj.removeComponent(await this.component_obj);
+
+export class ShapeModel extends ComponentModel {
+  defaults() {
+    return {
+      ...super.defaults(),
+
+      primitives: [],
+
+      _model_name: 'ShapeModel',
+      _view_name: 'ShapeView'
+    };
+  }
+}
+
+export class ShapeView extends ComponentView {
+
+  initialize(parameters: any): void {
+    super.initialize(parameters);
+    this.model.on('change:primitives', this.change_primitives, this);
+  }
+
+  async change_primitives() {
+    if (this.component_obj) {
+      this.stage_obj.removeComponent(this.component_obj);
       this.component_obj = null;
+    }
+    await this.render();
+  }
+
+  async render() {
+    if (!this.component_obj) {
+      super.render();
+      let shape = new NGL.Shape(this.model.get('name'));
+      for (const primitive of this.model.get('primitives')) {
+        switch (primitive.type) {
+          case 'arrow':
+            shape.addArrow(primitive.position1, primitive.position2, primitive.color, primitive.radius, primitive.name);
+            break;
+          case 'box':
+            shape.addBox(primitive.position, primitive.color, primitive.size, primitive.height_axis, primitive.depth_axis, primitive.name);
+            break;
+          case 'cone':
+            shape.addCone(primitive.position1, primitive.position2, primitive.color, primitive.radius, primitive.name);
+            break;
+          case 'cylinder':
+            shape.addCylinder(primitive.position1, primitive.position2, primitive.color, primitive.radius, primitive.name);
+            break;
+          case 'ellipsoid':
+            shape.addEllipsoid(primitive.position, primitive.color, primitive.radius, primitive.major_axis, primitive.minor_axis, primitive.name);
+            break;
+          case 'mesh':
+            shape.addMesh(primitive.position, primitive.color, primitive.index, primitive.normal, primitive.name);
+            break;
+          case 'octahedron':
+            shape.addOctahedron(primitive.position, primitive.color, primitive.size, primitive.height_axis, primitive.depth_axis, primitive.name);
+            break;
+          case 'sphere':
+            shape.addSphere(primitive.position, primitive.color, primitive.radius, primitive.name);
+            break;
+          case 'tetrahedron':
+            shape.addTetrahedron(primitive.position, primitive.color, primitive.size, primitive.height_axis, primitive.depth_axis, primitive.name);
+            break;
+          case 'text':
+            shape.addText(primitive.position, primitive.color, primitive.size, primitive.text);
+            break;
+          case 'torus':
+            shape.addTorus(primitive.position, primitive.color, primitive.radius, primitive.major_axis, primitive.minor_axis, primitive.name);
+            break;
+        }
+      }
+      this.component_obj = this.stage_obj.addComponentFromObject(shape);
+  	  this.wire_component();
     }
   }
 }
