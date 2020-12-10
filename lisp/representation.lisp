@@ -201,11 +201,16 @@
 
 
 (defclass buffer-representation (representation)
-  ()
+  ((buffer
+     :accessor buffer
+     :initarg :buffer
+     :initform nil
+     :trait :plist-snake-case))
   (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
-    :%model-name "BufferRepresentationModel"))
+    :%model-name "BufferRepresentationModel"
+    :%view-name "BufferRepresentationView"))
 
 
 (defclass structure-representation (representation)

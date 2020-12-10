@@ -10,6 +10,7 @@
     #:background-color
     #:ball-and-stick
     #:base
+    #:buffer
     #:buffer-representation
     #:camera-eye-sep
     #:camera-fov

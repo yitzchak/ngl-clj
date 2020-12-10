@@ -1,5 +1,8 @@
 import { snake } from 'case';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const NGL = require('ngl');
+
 
 export function serialize_model(model: any, object: any): any {
   var result: any = {};
@@ -78,3 +81,38 @@ export class ViewSet<T> {
   _remove_view: (view: T) => void;
 }
 
+
+export function create_buffer(params: any): any {
+  let data = Object.assign({}, params);
+  delete data.type;
+  delete data.buffer;
+
+  switch (params.type) {
+    case 'arrow':
+      return new NGL.ArrowBuffer(data);
+    case 'box':
+      return new NGL.BoxBuffer(data);
+    case 'cone':
+      return new NGL.ConeBuffer(data);
+    case 'cylinder':
+      return new NGL.CylinderBuffer(data);
+    case 'ellisoid':
+      return new NGL.EllipsoidBuffer(data);
+    case 'mesh':
+      return new NGL.MeshBuffer(data);
+    case 'octahedron':
+      return new NGL.OctahedronBuffer(data);
+    case 'point':
+      return new NGL.PointBuffer(data);
+    case 'sphere':
+      return new NGL.SphereBuffer(data);
+    case 'tetrahedron':
+      return new NGL.TetrahedronBuffer(data);
+    case 'text':
+      return new NGL.TextBuffer(data);
+    case 'torus':
+      return new NGL.TorusBuffer(data);
+    case 'wideline':
+      return new NGL.WidelineBuffer(data);
+  }
+}

@@ -15,6 +15,8 @@ import '../css/widget.css';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const camelcaseKeys = require('camelcase-keys');
 
+import { create_buffer } from './utils';
+
 
 export class RepresentationModel extends WidgetModel {
   defaults() {
@@ -96,8 +98,8 @@ export class RepresentationView extends WidgetView {
 
   parameters_changed() {
     if (this.representation_obj) {
-     this.representation_obj.setParameters(this.get_parameters());
-     this.representation_obj.build();
+      this.representation_obj.setParameters(this.get_parameters());
+      this.representation_obj.build();
     }
   }
 
@@ -126,8 +128,38 @@ export class BufferRepresentationModel extends RepresentationModel {
       ...super.defaults(),
 
       _type: 'buffer',
-      _model_name: 'BufferRepresentationModel'
+      _model_name: 'BufferRepresentationModel',
+      _view_name: 'BufferRepresentationView'
     };
+  }
+}
+
+
+export class BufferRepresentationView extends RepresentationView {
+  initialize(parameters: any): void {
+    super.initialize(parameters);
+
+    this.model.on('change:buffer', this.buffer_changed.bind(this));
+  }
+
+  buffer_changed() {
+    if (this.representation_obj) {
+      this.component_obj.removeRepresentation(this.representation_obj);
+      this.representation_obj = null;
+      this.render();
+    }
+  }
+
+  render() {
+    const buffer = this.model.get('buffer');
+
+    if (this.component_obj && !this.representation_obj && buffer.type) {
+      this.representation_obj =
+        this.component_obj.addBufferRepresentation(create_buffer(buffer),
+                                                   this.get_parameters());
+    } else {
+      super.render();
+    }
   }
 }
 

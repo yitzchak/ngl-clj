@@ -15,7 +15,7 @@ const NGL = require('ngl');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const camelCase = require('camelcase');
 
-import { ViewSet } from './utils';
+import { ViewSet, create_buffer } from './utils';
 
 
 export class ComponentModel extends WidgetModel {
@@ -151,7 +151,7 @@ export class ComponentView extends WidgetView {
     component_obj.setScale(this.model.get('scale'));
 
     component_obj.signals.nameChanged.add((name: string): void => {
-      this.model.set('name', name);
+      this.model.set('name', name || null);
       this.model.save_changes();
     });
   }
@@ -280,40 +280,44 @@ export class ShapeView extends ComponentView {
       super.render();
       let shape = new NGL.Shape(this.model.get('name'));
       for (const primitive of this.model.get('primitives')) {
-        switch (primitive.type) {
-          case 'arrow':
-            shape.addArrow(primitive.position1, primitive.position2, primitive.color, primitive.radius, primitive.name);
-            break;
-          case 'box':
-            shape.addBox(primitive.position, primitive.color, primitive.size, primitive.height_axis, primitive.depth_axis, primitive.name);
-            break;
-          case 'cone':
-            shape.addCone(primitive.position1, primitive.position2, primitive.color, primitive.radius, primitive.name);
-            break;
-          case 'cylinder':
-            shape.addCylinder(primitive.position1, primitive.position2, primitive.color, primitive.radius, primitive.name);
-            break;
-          case 'ellipsoid':
-            shape.addEllipsoid(primitive.position, primitive.color, primitive.radius, primitive.major_axis, primitive.minor_axis, primitive.name);
-            break;
-          case 'mesh':
-            shape.addMesh(primitive.position, primitive.color, primitive.index, primitive.normal, primitive.name);
-            break;
-          case 'octahedron':
-            shape.addOctahedron(primitive.position, primitive.color, primitive.size, primitive.height_axis, primitive.depth_axis, primitive.name);
-            break;
-          case 'sphere':
-            shape.addSphere(primitive.position, primitive.color, primitive.radius, primitive.name);
-            break;
-          case 'tetrahedron':
-            shape.addTetrahedron(primitive.position, primitive.color, primitive.size, primitive.height_axis, primitive.depth_axis, primitive.name);
-            break;
-          case 'text':
-            shape.addText(primitive.position, primitive.color, primitive.size, primitive.text);
-            break;
-          case 'torus':
-            shape.addTorus(primitive.position, primitive.color, primitive.radius, primitive.major_axis, primitive.minor_axis, primitive.name);
-            break;
+        if (primitive.buffer) {
+          shape.addBuffer(create_buffer(primitive));
+        } else {
+          switch (primitive.type) {
+            case 'arrow':
+              shape.addArrow(primitive.position1, primitive.position2, primitive.color, primitive.radius, primitive.name);
+              break;
+            case 'box':
+              shape.addBox(primitive.position, primitive.color, primitive.size, primitive.height_axis, primitive.depth_axis, primitive.name);
+              break;
+            case 'cone':
+              shape.addCone(primitive.position1, primitive.position2, primitive.color, primitive.radius, primitive.name);
+              break;
+            case 'cylinder':
+              shape.addCylinder(primitive.position1, primitive.position2, primitive.color, primitive.radius, primitive.name);
+              break;
+            case 'ellipsoid':
+              shape.addEllipsoid(primitive.position, primitive.color, primitive.radius, primitive.major_axis, primitive.minor_axis, primitive.name);
+              break;
+            case 'mesh':
+              shape.addMesh(primitive.position, primitive.color, primitive.index, primitive.normal, primitive.name);
+              break;
+            case 'octahedron':
+              shape.addOctahedron(primitive.position, primitive.color, primitive.size, primitive.height_axis, primitive.depth_axis, primitive.name);
+              break;
+            case 'sphere':
+              shape.addSphere(primitive.position, primitive.color, primitive.radius, primitive.name);
+              break;
+            case 'tetrahedron':
+              shape.addTetrahedron(primitive.position, primitive.color, primitive.size, primitive.height_axis, primitive.depth_axis, primitive.name);
+              break;
+            case 'text':
+              shape.addText(primitive.position, primitive.color, primitive.size, primitive.text);
+              break;
+            case 'torus':
+              shape.addTorus(primitive.position, primitive.color, primitive.radius, primitive.major_axis, primitive.minor_axis, primitive.name);
+              break;
+          }
         }
       }
       this.component_obj = this.stage_obj.addComponentFromObject(shape);
