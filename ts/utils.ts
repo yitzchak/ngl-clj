@@ -1,4 +1,4 @@
-import { snake } from 'case';
+import { camel, snake } from 'case';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const NGL = require('ngl');
@@ -23,6 +23,18 @@ export function snake_object(object: any): any {
 
   for (const [key, value] of Object.entries(object)) {
     result[snake(key)] = value;
+  }
+
+  return result;
+}
+
+export function camel_object(object: any): any {
+  var result: any = {};
+
+  for (const [key, value] of Object.entries(object)) {
+    if (key[0] !== '_' && value !== null) {
+      result[camel(key)] = value;
+    }
   }
 
   return result;

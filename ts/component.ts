@@ -12,8 +12,7 @@ import { MODULE_NAME, MODULE_VERSION } from './version';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const NGL = require('ngl');
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const camelCase = require('camelcase');
+import { camel } from 'case';
 
 import { ViewSet, create_buffer } from './utils';
 
@@ -25,6 +24,7 @@ export class ComponentModel extends WidgetModel {
 
       visible: true,
       name: null,
+      position: [0.0, 0.0, 0.0],
       positions: null,
       quaternion: [0.0, 0.0, 0.0, 0.0],
       scale: 1.0,
@@ -39,6 +39,14 @@ export class ComponentModel extends WidgetModel {
 
   static serializers: ISerializers = {
     representations: { deserialize: widgets.unpack_models },
+    positions: {
+      deserialize: (value: any): Float32Array | null => {
+        return (value instanceof DataView) ? new Float32Array(value.buffer) : value;
+      },
+      serialize: (value: any): DataView | null => {
+        return (value instanceof Float32Array) ? new DataView(value.buffer) : value;
+      }
+    },
     ...WidgetModel.serializers,
   };
 }
@@ -90,7 +98,7 @@ export class ComponentView extends WidgetView {
     for (const name of this.parameter_names()) {
       var value: any = this.model.get(name);
       if (value != null) {
-        params[camelCase(name)] = value;
+        params[camel(name)] = value;
       }
     }
 
@@ -101,7 +109,7 @@ export class ComponentView extends WidgetView {
     var positions: any = this.model.get('positions');
     let component_obj = await this.component_obj;
     if (positions) {
-      component_obj.structure.updatePosition((positions instanceof DataView) ? new Float32Array(positions.buffer) : positions);
+      component_obj.structure.updatePosition(positions);
       component_obj.updateRepresentations({ position: true });
     }
   }
@@ -139,6 +147,10 @@ export class ComponentView extends WidgetView {
   }
 
   async wire_component(): Promise<void> {
+    if (this.model.get('positions')) {
+      this.positions_changed();
+    }
+
 	  this.representations_changed();
 
 	  let component_obj = await this.component_obj;
@@ -320,7 +332,7 @@ export class ShapeView extends ComponentView {
           }
         }
       }
-      this.component_obj = this.stage_obj.addComponentFromObject(shape);
+      this.component_obj = this.stage_obj.addComponentFromObject(shape, this.get_parameters());
   	  this.wire_component();
     }
   }

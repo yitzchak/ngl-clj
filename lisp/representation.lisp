@@ -110,13 +110,13 @@
      :initform nil
      :trait :bool
      :documentation "only build & update the representation when visible otherwise defer changes until set visible again")
-   (matrix
+   #+(or)(matrix
      :accessor matrix
      :initarg :matrix
-     :initform `((1d0 0d0 0d0 0d0)
-                 (0d0 1d0 0d0 0d0)
-                 (0d0 0d0 1d0 0d0)
-                 (0d0 0d0 0d0 1d0))
+     :initform #2A((1d0 0d0 0d0 0d0)
+                   (0d0 1d0 0d0 0d0)
+                   (0d0 0d0 1d0 0d0)
+                   (0d0 0d0 0d0 1d0))
      :trait :json
      :documentation "")
    (metalness
@@ -189,7 +189,7 @@
      :initarg :wireframe
      :initform nil
      :trait :bool
-     :documentation "ender as wireframe"))
+     :documentation "Render as wireframe"))
   (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
@@ -205,7 +205,7 @@
      :accessor buffer
      :initarg :buffer
      :initform nil
-     :trait :plist-snake-case))
+     :trait :plist-camel-case))
   (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
@@ -284,6 +284,7 @@
   (:documentation "")
   (:default-initargs
     :color-scheme "element"
+    :flat-shaded :null
     :%model-name "LineModel"))
 
 (jupyter-widgets:register-widget line)
@@ -311,7 +312,9 @@
      :initform 0.5d0
      :trait :float))
   (:metaclass jupyter-widgets:trait-metaclass)
-  (:documentation ""))
+  (:documentation "")
+  (:default-initargs
+    :flat-shaded :null))
 
 
 (defclass dihedral (measurement)

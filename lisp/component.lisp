@@ -6,8 +6,8 @@
      :accessor name
      :initarg :name
      :trait :string)
-   #+(or)(position
-     :accessor position
+   (position
+     :accessor %position
      :initarg :position
      :initform #(0d0 0d0 0d0)
      :trait :float-vector)
@@ -54,8 +54,8 @@
    (positions
      :accessor positions
      :initarg :positions
-     :initform :null
-     :trait :vector)
+     :initform nil
+     :trait :single-float-buffer)
    (as-trajectory
      :accessor as-trajectory
      :initarg :as-trajectory

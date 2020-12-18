@@ -12,14 +12,11 @@ import { MODULE_NAME, MODULE_VERSION } from './version';
 // Import the CSS
 import '../css/widget.css';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const camelcaseKeys = require('camelcase-keys');
-
-import { create_buffer } from './utils';
+import { create_buffer, camel_object } from './utils';
 
 
 export class RepresentationModel extends WidgetModel {
-  defaults() {
+  defaults(): any {
     return {
       ...super.defaults(),
 
@@ -41,7 +38,7 @@ export class RepresentationModel extends WidgetModel {
       interior_color: 0x222222,
       interior_darkening: 0,
       lazy: false,
-      matrix: [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]],
+      //matrix: [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]],
       metalness: 0.0,
       name: null,
       opacity: 1.0,
@@ -93,13 +90,19 @@ export class RepresentationView extends WidgetView {
   }
 
   get_parameters(): any {
-    return camelcaseKeys(this.model.attributes, { exclude: [/^_/] });
+    return camel_object(this.model.attributes);
   }
 
   parameters_changed() {
     if (this.representation_obj) {
-      this.representation_obj.setParameters(this.get_parameters());
-      this.representation_obj.build();
+      try {
+        this.representation_obj.setParameters(this.get_parameters());
+        this.representation_obj.build();
+      } catch (e) {
+        console.log(this.get_parameters());
+        console.log(this);
+        console.log(e);
+      }
     }
   }
 
@@ -108,7 +111,7 @@ export class RepresentationView extends WidgetView {
     if (this.component_obj && !this.representation_obj) {
       this.representation_obj =
         this.component_obj.addRepresentation(this.model.get('_type'),
-                                             this.get_parameters());
+                                             { sdf: false, ...this.get_parameters() });
     }
   }
 
@@ -123,7 +126,7 @@ export class RepresentationView extends WidgetView {
 
 
 export class BufferRepresentationModel extends RepresentationModel {
-  defaults() {
+  defaults(): any {
     return {
       ...super.defaults(),
 
@@ -165,7 +168,7 @@ export class BufferRepresentationView extends RepresentationView {
 
 
 export class StructureRepresentationModel extends RepresentationModel {
-  defaults() {
+  defaults(): any {
     return {
       ...super.defaults(),
 
@@ -176,7 +179,7 @@ export class StructureRepresentationModel extends RepresentationModel {
 
 
 export class CartoonModel extends StructureRepresentationModel {
-  defaults() {
+  defaults(): any {
     return {
       ...super.defaults(),
 
@@ -188,7 +191,7 @@ export class CartoonModel extends StructureRepresentationModel {
 
 
 export class BallAndStickModel extends StructureRepresentationModel {
-  defaults() {
+  defaults(): any {
     return {
       ...super.defaults(),
 
@@ -202,7 +205,7 @@ export class BallAndStickModel extends StructureRepresentationModel {
 
 
 export class BackboneModel extends BallAndStickModel {
-  defaults() {
+  defaults(): any {
     return {
       ...super.defaults(),
 
@@ -214,7 +217,7 @@ export class BackboneModel extends BallAndStickModel {
 
 
 export class BaseModel extends BallAndStickModel {
-  defaults() {
+  defaults(): any {
     return {
       ...super.defaults(),
 
@@ -226,7 +229,7 @@ export class BaseModel extends BallAndStickModel {
 
 
 export class LicoriceModel extends BallAndStickModel {
-  defaults() {
+  defaults(): any {
     return {
       ...super.defaults(),
 
@@ -238,7 +241,7 @@ export class LicoriceModel extends BallAndStickModel {
 
 
 export class LineModel extends StructureRepresentationModel {
-  defaults() {
+  defaults(): any {
     return {
       ...super.defaults(),
 
@@ -250,7 +253,7 @@ export class LineModel extends StructureRepresentationModel {
 
 
 export class MeasurementRepresentationModel extends RepresentationModel {
-  defaults() {
+  defaults(): any {
     return {
       ...super.defaults(),
 
@@ -264,7 +267,7 @@ export class MeasurementRepresentationModel extends RepresentationModel {
 
 
 export class DihedralModel extends MeasurementRepresentationModel {
-  defaults() {
+  defaults(): any {
     return {
       ...super.defaults(),
 
@@ -278,7 +281,7 @@ export class DihedralModel extends MeasurementRepresentationModel {
 
 
 export class RibbonModel extends StructureRepresentationModel {
-  defaults() {
+  defaults(): any {
     return {
       ...super.defaults(),
 
@@ -290,7 +293,7 @@ export class RibbonModel extends StructureRepresentationModel {
 
 
 export class SpacefillModel extends StructureRepresentationModel {
-  defaults() {
+  defaults(): any {
     return {
       ...super.defaults(),
 
@@ -302,7 +305,7 @@ export class SpacefillModel extends StructureRepresentationModel {
 
 
 export class SurfaceModel extends RepresentationModel {
-  defaults() {
+  defaults(): any {
     return {
       ...super.defaults(),
 

@@ -74,7 +74,7 @@
     #:pause
     #:pick-filter
     #:play
-    #:position
+    #:%position
     #:positions
     #:primitives
     #:quality
