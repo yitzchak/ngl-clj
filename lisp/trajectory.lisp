@@ -6,6 +6,11 @@
      :accessor name
      :initarg :name
      :trait :string)
+   (ext
+     :accessor ext
+     :initarg :ext
+     :initform nil
+     :trait :string)
    (value
      :accessor value
      :initarg :value

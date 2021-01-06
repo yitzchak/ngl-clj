@@ -172,6 +172,7 @@ export class StructureRepresentationModel extends RepresentationModel {
     return {
       ...super.defaults(),
 
+      assembly: 'default',
       sele: ""
     };
   }
@@ -182,6 +183,13 @@ export class CartoonModel extends StructureRepresentationModel {
   defaults(): any {
     return {
       ...super.defaults(),
+
+      aspect_ratio: 5.0,
+      subdiv: 12,
+      radial_segments: 20,
+      tension: null,
+      capped: true,
+      smooth_sheet: false,
 
       _type: 'cartoon',
       _model_name: 'CartoonModel'
@@ -195,6 +203,16 @@ export class BallAndStickModel extends StructureRepresentationModel {
     return {
       ...super.defaults(),
 
+      aspect_ratio: 2.0,
+      bond_scale: 0.4,
+      bond_spacing: 1.0,
+      cylinder_only: false,
+      disable_impostor: true,
+      line_only: false,
+      linewidth: 2,
+      multiple_bond: 'off',
+      open_ended: true,
+      radial_segments: 10,
       sphere_detail: 2,
 
       _type: 'ball+stick',
@@ -304,12 +322,22 @@ export class SpacefillModel extends StructureRepresentationModel {
 }
 
 
-export class SurfaceModel extends RepresentationModel {
+export class SurfaceModel extends StructureRepresentationModel {
   defaults(): any {
     return {
       ...super.defaults(),
 
-      use_worker: false,
+      background: false,
+      color_volume: null,
+      contour: false,
+      cutoff: 0.0,
+      filter_sele: "",
+      opaque_back: true,
+      probe_radius: 1.4,
+      scale_factor: 2.0,
+      smooth: 2,
+      surface_type: 'ms',
+      use_worker: true,
 
       _type: 'surface',
       _model_name: 'SurfaceModel'

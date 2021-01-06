@@ -4,17 +4,23 @@
   (:export
     #:ambient-color
     #:ambient-intensity
+    #:aspect-ratio
+    #:assembly
     #:atom-quad
     #:auto-view
     #:backbone
+    #:background
     #:background-color
     #:ball-and-stick
     #:base
+    #:bond-scale
+    #:bond-spacing
     #:buffer
     #:buffer-representation
     #:camera-eye-sep
     #:camera-fov
     #:camera-type
+    #:capped
     #:cartoon
     #:clip-center
     #:clip-dist
@@ -29,8 +35,12 @@
     #:color-scale
     #:color-scheme
     #:color-value
+    #:color-volume
     #:component
     #:components
+    #:contour
+    #:cutoff
+    #:cylinder-only
     #:depth-write
     #:diffuse
     #:diffuse-interior
@@ -39,6 +49,7 @@
     #:disable-impostor
     #:disable-picking
     #:ext
+    #:filter-sele
     #:flat-shaded
     #:fog-far
     #:fog-near
@@ -60,15 +71,19 @@
     #:light-color
     #:light-intensity
     #:line
+    #:line-only
+    #:linewidth
     #:matrix
     #:measurement
     #:metalness
     #:mode
     #:mouse-preset
+    #:multiple-bond
     #:name
     #:on-pick
     #:on-stage-pick
     #:opacity
+    #:opaque-back
     #:open-ended
     #:pan-speed
     #:pause
@@ -77,6 +92,7 @@
     #:%position
     #:positions
     #:primitives
+    #:probe-radius
     #:quality
     #:quaternion
     #:radial-segments
@@ -88,9 +104,12 @@
     #:roughness
     #:sample-level
     #:scale
+    #:scale-factor
     #:sele
     #:shape
     #:side
+    #:smooth
+    #:smooth-sheet
     #:spacefill
     #:sphere-detail
     #:spin
@@ -99,7 +118,10 @@
     #:stop
     #:structure
     #:structure-representation
+    #:subdiv
     #:surface
+    #:surface-type
+    #:tension
     #:timeout
     #:tooltip
     #:trajectories

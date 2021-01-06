@@ -1,11 +1,13 @@
 import {
-  ISerializers,
   WidgetModel,
   WidgetView,
 } from '@jupyter-widgets/base';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 //const widgets = require('@jupyter-widgets/base');
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const NGL = require('ngl');
 
 import { MODULE_NAME, MODULE_VERSION } from './version';
 
@@ -16,15 +18,17 @@ export class TrajectoryModel extends WidgetModel {
     return {
       ...super.defaults(),
 
-      name: '',
+      direction: 'forward',
+      ext: null,
       frame: 0,
+      interpolate_step: 5,
+      interpolate_type: "",
+      is_running: false,
+      mode: 'loop',
+      name: '',
       step: null,
       timeout: 50,
-      interpolate_type: "",
-      interpolate_step: 5,
-      mode: 'loop',
-      direction: 'forward',
-      is_running: false,
+      value: null,
 
       _model_name: 'TrajectoryModel',
       _model_module: MODULE_NAME,
@@ -34,10 +38,6 @@ export class TrajectoryModel extends WidgetModel {
       _view_module_version: MODULE_VERSION,
     };
   }
-
-  static serializers: ISerializers = {
-    ...WidgetModel.serializers,
-  };
 }
 
 export class TrajectoryView extends WidgetView {
@@ -102,12 +102,27 @@ export class TrajectoryView extends WidgetView {
     });
   }
 
+  async load_file(): Promise<any> {
+    var value: any = this.model.get('value');
+    let params: any = {};
+
+    if (this.model.get('ext')) {
+      params.ext = this.model.get('ext');
+    	value = new Blob([(value instanceof DataView) ? value.buffer : value],
+    	                 { type: (typeof value === 'string' || value instanceof String)
+    	                            ? 'text/plain'
+    	                            : 'application/octet-binary' });
+    }
+
+    this.trajectory_obj = await this.component_obj.addTrajectory(await NGL.autoLoad(value, params),
+                                                                 this.get_parameters());
+  }
+
   async render() {
     super.render();
-    if (this.component_obj && !this.trajectory_obj && !this.rendered) {
+    if (this.component_obj && !this.trajectory_obj && !this.rendered && this.model.get('value')) {
       this.rendered = true;
-      var value: any = this.model.get('value');
-      this.trajectory_obj = await this.component_obj.addTrajectory(value, this.get_parameters());
+      await this.load_file();
   	  this.wire_view();
     }
   }

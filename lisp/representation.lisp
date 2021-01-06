@@ -214,7 +214,12 @@
 
 
 (defclass structure-representation (representation)
-  ((sele
+  ((assembly
+     :accessor assembly
+     :initarg :assembly
+     :initform ""
+     :trait :string)
+   (sele
      :accessor sele
      :initarg :sele
      :initform ""
@@ -224,7 +229,36 @@
 
 
 (defclass cartoon (structure-representation)
-  ()
+  ((aspect-ratio
+     :accessor aspect-ratio
+     :initarg :aspect-ratio
+     :initform 5s0
+     :trait :float)
+   (subdiv
+     :accessor subdiv
+     :initarg :subdiv
+     :initform 12s0
+     :trait :float)
+   (radial-segments
+     :accessor radial-segments
+     :initarg :radial-segments
+     :initform 10
+     :trait :int)
+   (tension
+     :accessor tension
+     :initarg :tension
+     :initform nil
+     :trait :float)
+   (capped
+     :accessor capped
+     :initarg :capped
+     :initform t
+     :trait :boolean)
+   (smooth-sheet
+     :accessor smooth-sheet
+     :initarg :smooth-sheet
+     :initform nil
+     :trait :boolean))
   (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
@@ -234,7 +268,58 @@
 
 
 (defclass ball-and-stick (structure-representation)
-  ((sphere-detail
+  ((aspect-ratio
+     :accessor aspect-ratio
+     :initarg :aspect-ratio
+     :initform 2s0
+     :trait :float)
+   (bond-scale
+     :accessor bond-scale
+     :initarg :bond-scale
+     :initform 0.4s0
+     :trait :float)
+   (bond-spacing
+     :accessor bond-spacing
+     :initarg :bond-spacing
+     :initform 1s0
+     :trait :flaot)
+   (cylinder-only
+     :accessor cylinder-only
+     :initarg :cylinder-only
+     :initform nil
+     :trait :boolean)
+   (disable-impostor
+     :accessor disable-imposter
+     :initarg :disable-imposter
+     :initform t
+     :trait :bool
+     :documentation "")
+   (line-only
+     :accessor line-only
+     :initarg :line-only
+     :initform nil
+     :trait :boolean)
+   (linewidth
+     :accessor linewidth
+     :initarg :linewidth
+     :initform 2s0
+     :trait :float)
+   (multiple-bond
+     :accessor multiple-bond
+     :initarg :multiple-bond
+     :initform "off"
+     :trait :string)
+   (open-ended
+     :accessor open-ended
+     :initarg :open-ended
+     :initform t
+     :trait :boolean)
+   (radial-segments
+     :accessor radial-segments
+     :initarg :radial-segments
+     :initform t
+     :trait :float)
+   (sphere-detail
      :accessor sphere-detail
      :initarg :sphere-detail
      :initform 2
@@ -352,12 +437,73 @@
 (jupyter-widgets:register-widget spacefill)
 
 
-(defclass surface (representation)
-  ((use-worker
+(defclass surface (structure-representation)
+  ((background
+     :accessor background
+     :initarg :background
+     :initform nil
+     :trait :bool
+     :documentation "Render the surface in the background, unlit.")
+   (color-volume
+     :accessor color-volume
+     :initarg :color-volume
+     :initform nil
+     :trait :json
+     :documentation "parameter for surface representation of volume data")
+   (contour
+     :accessor contour
+     :initarg :contour
+     :initform nil
+     :trait :bool
+     :documentation "")
+   (cutoff
+     :accessor cutoff
+     :initarg :cutoff
+     :initform 0s0
+     :trait :float
+     :documentation "")
+   (filter-sele
+     :accessor filter-sele
+     :initarg :filter-sele
+     :initform ""
+     :trait :string
+     :documentation "")
+   (opaque-back
+     :accessor opaque-back
+     :initarg :opaque-back
+     :initform t
+     :trait :bool
+     :documentation "Render the back-faces (where normals point away from the camera) of the surface opaque, ignoring the transparency parameter.")
+   (probe-radius
+     :accessor probe-radius
+     :initarg :probe-radius
+     :initform 1.4s0
+     :trait :float
+     :documentation "")
+   (scale-factor
+     :accessor scale-factor
+     :initarg :scale-factor
+     :initform 2s0
+     :trait :float
+     :documentation "")
+   (smooth
+     :accessor smooth
+     :initarg :smooth
+     :initform 2
+     :trait :int
+     :documentation "How many iterations of laplacian smoothing after surface triangulation. For volume data only.")
+   (surface-type
+     :accessor surface-type
+     :initarg :surface-type
+     :initform "ms"
+     :trait :string
+     :documentation "")
+   (use-worker
      :accessor use-worker
      :initarg :use-worker
-     :initform nil
-     :trait :bool))
+     :initform t
+     :trait :bool
+     :documentation "Weather or not to triangulate the volume asynchronously in a Web Worker. For volume data only."))
   (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
