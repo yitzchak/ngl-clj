@@ -99,6 +99,7 @@ function tooltip_pick (stage: any, pickingProxy: any) {
 }
 
 export class StageView extends DOMWidgetView {
+  stage_container: any;
   stage_obj: any;
   componentViews: any;
   in_components_changing = false;
@@ -229,7 +230,10 @@ export class StageView extends DOMWidgetView {
       this.el.classList.add('jupyter-widgets');
       this.el.setAttribute('data-jp-suppress-context-menu', '');
 
-      this.stage_obj = new NGL.Stage(this.el, this.stage_parameters());
+      this.stage_container = document.createElement('div');
+      this.el.appendChild(this.stage_container);
+
+      this.stage_obj = new NGL.Stage(this.stage_container, this.stage_parameters());
       this.stage_obj.mouseControls.remove('hoverPick');
       this.stage_obj.mouseControls.add('hoverPick', tooltip_pick);
       this.components_changed();
@@ -304,7 +308,8 @@ export class StageView extends DOMWidgetView {
   processPhosphorMessage(msg: any): void {
     super.processPhosphorMessage(msg);
     if ((msg.type === 'resize' || msg.type === 'after-show') && this.stage_obj) {
-      this.stage_obj.handleResize();
+      const box = this.el.getBoundingClientRect();
+      this.stage_obj.setSize(Math.floor(box.width) + 'px', Math.floor(box.height) + 'px');
     }
   }
 
