@@ -37,7 +37,7 @@
     "prepack": "yarn run build"
   },
   "dependencies": {
-    "@jupyter-widgets/base": "^3.0.0",
+    "@jupyter-widgets/base": "^4.0.0",
     "case": "^1.6.3",
     "ngl": "^2.0.0-dev.36"
   },
