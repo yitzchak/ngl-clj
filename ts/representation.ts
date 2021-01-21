@@ -203,17 +203,17 @@ export class BallAndStickModel extends StructureRepresentationModel {
     return {
       ...super.defaults(),
 
-      aspect_ratio: 2.0,
-      bond_scale: 0.4,
-      bond_spacing: 1.0,
-      cylinder_only: false,
-      disable_impostor: true,
-      line_only: false,
-      linewidth: 2,
+      //aspect_ratio: 2.0,
+      //bond_scale: 0.4,
+      //bond_spacing: 1.0,
+      // cylinder_only: false,
+      //disable_impostor: true,
+      // line_only: false,
+      // linewidth: 2,
       multiple_bond: 'off',
-      open_ended: true,
-      radial_segments: 10,
-      sphere_detail: 2,
+      //open_ended: true,
+      //radial_segments: 10,
+      //sphere_detail: 2,
 
       _type: 'ball+stick',
       _model_name: 'BallAndStickModel'

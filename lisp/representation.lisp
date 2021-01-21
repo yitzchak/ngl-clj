@@ -6,7 +6,7 @@
      :accessor clip-center
      :initarg :clip-center
      :initform #(0d0 0d0 0d0)
-     :trait :flaot-vector
+     :trait :float-vector
      :documentation "position of for spherical clipping")
    (clip-near
      :accessor clip-near
@@ -217,7 +217,7 @@
   ((assembly
      :accessor assembly
      :initarg :assembly
-     :initform ""
+     :initform "default"
      :trait :string)
    (sele
      :accessor sele
@@ -268,38 +268,38 @@
 
 
 (defclass ball-and-stick (structure-representation)
-  ((aspect-ratio
+  (#+(or)(aspect-ratio
      :accessor aspect-ratio
      :initarg :aspect-ratio
      :initform 2s0
      :trait :float)
-   (bond-scale
+   #+(or)(bond-scale
      :accessor bond-scale
      :initarg :bond-scale
      :initform 0.4s0
      :trait :float)
-   (bond-spacing
+   #+(or)(bond-spacing
      :accessor bond-spacing
      :initarg :bond-spacing
      :initform 1s0
-     :trait :flaot)
-   (cylinder-only
+     :trait :float)
+   #+(or)(cylinder-only
      :accessor cylinder-only
      :initarg :cylinder-only
      :initform nil
      :trait :boolean)
-   (disable-impostor
+   #+(or)(disable-impostor
      :accessor disable-imposter
      :initarg :disable-imposter
      :initform t
      :trait :bool
      :documentation "")
-   (line-only
+   #+(or)(line-only
      :accessor line-only
      :initarg :line-only
      :initform nil
      :trait :boolean)
-   (linewidth
+   #+(or)(linewidth
      :accessor linewidth
      :initarg :linewidth
      :initform 2s0
@@ -309,17 +309,17 @@
      :initarg :multiple-bond
      :initform "off"
      :trait :string)
-   (open-ended
+   #+(or)(open-ended
      :accessor open-ended
      :initarg :open-ended
      :initform t
      :trait :boolean)
-   (radial-segments
+   #+(or)(radial-segments
      :accessor radial-segments
      :initarg :radial-segments
      :initform t
      :trait :float)
-   (sphere-detail
+   #+(or)(sphere-detail
      :accessor sphere-detail
      :initarg :sphere-detail
      :initform 2
