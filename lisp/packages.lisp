@@ -8,6 +8,7 @@
     #:assembly
     #:atom-quad
     #:auto-view
+    #:auto-view-duration
     #:backbone
     #:background
     #:background-color

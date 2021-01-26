@@ -11,6 +11,11 @@
      :initarg :position
      :initform #(0d0 0d0 0d0)
      :trait :float-vector)
+   (auto-view-duration
+     :accessor auto-view-duration
+     :initarg :auto-view-duration
+     :initform nil
+     :trait :int)
    (representations
      :accessor representations
      :initarg :representations

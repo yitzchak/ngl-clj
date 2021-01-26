@@ -22,6 +22,7 @@ export class ComponentModel extends WidgetModel {
     return {
       ...super.defaults(),
 
+      auto_view_duration: null,
       visible: true,
       name: null,
       position: [0.0, 0.0, 0.0],
@@ -154,6 +155,11 @@ export class ComponentView extends WidgetView {
 	  this.representations_changed();
 
 	  let component_obj = await this.component_obj;
+	  let auto_view_duration = this.model.get('auto_view_duration');
+
+	  if (auto_view_duration !== null) {
+      component_obj.autoView(auto_view_duration);
+	  }
 
     if (component_obj.name != this.model.get('name')) {
       this.model.set('name', component_obj.name);
