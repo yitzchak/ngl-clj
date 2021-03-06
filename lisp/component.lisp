@@ -9,7 +9,7 @@
    (position
      :accessor %position
      :initarg :position
-     :initform #(0d0 0d0 0d0)
+     :initform #(0s0 0s0 0s0)
      :trait :float-vector)
    (auto-view-duration
      :accessor auto-view-duration

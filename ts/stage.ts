@@ -177,11 +177,14 @@ export class StageView extends DOMWidgetView {
   handle_custom_message(content: any): void {
     if (this.stage_obj) {
       switch (content.do) {
-        case 'make-image':
+        case 'make_image':
           this.make_image(content);
           break;
         case 'auto_view':
           this.stage_obj.autoView(content.duration || 0);
+          break;
+        case 'move':
+          this.stage_obj.animationControls.move(content.to, content.duration || 0);
           break;
       }
     }

@@ -219,6 +219,12 @@
      :initarg :assembly
      :initform "default"
      :trait :string)
+   (radius-scale
+     :accessor radius-scale
+     :initarg :radius-scale
+     :initform 1s0
+     :trait :float
+     :documentation "")
    (sele
      :accessor sele
      :initarg :sele

@@ -173,6 +173,7 @@ export class StructureRepresentationModel extends RepresentationModel {
       ...super.defaults(),
 
       assembly: 'default',
+      radius_scale: 1.0,
       sele: ""
     };
   }

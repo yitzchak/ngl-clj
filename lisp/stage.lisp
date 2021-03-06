@@ -184,7 +184,7 @@
       (setf (gethash uuid (callbacks instance)) callback)
       (jupyter-widgets:send-custom instance
         (jupyter:json-new-obj
-          ("do" "make-image")
+          ("do" "make_image")
           ("uuid" uuid)
           ("factor" factor)
           ("antialias" (if antialias :true :false))
@@ -226,4 +226,5 @@
 
 (defun on-stage-pick (instance handler)
   (push handler (on-pick instance)))
+
 

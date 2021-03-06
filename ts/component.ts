@@ -77,6 +77,14 @@ export class ComponentView extends WidgetView {
         (await this.component_obj).setName(event.changed.name);
       }
     });
+    this.model.on('change:position', async (event: any) => {
+      if (this.component_obj) {
+        let component_obj = await this.component_obj
+
+        component_obj.setPosition(event.changed.position);
+        component_obj.updateRepresentations({ position: true });
+      }
+    });
     this.model.on('change:scale', async (event: any) => {
       if (this.component_obj) {
         (await this.component_obj).setScale(event.changed.scale);
@@ -143,6 +151,15 @@ export class ComponentView extends WidgetView {
           (await this.component_obj).structure.updatePosition(new Float32Array(buffers[0].buffer));
           (await this.component_obj).updateRepresentations({ position: true });
           break;
+        case 'move':
+          this.stage_obj.animationControls.moveComponent(await this.component_obj, content.to, content.duration || 0);
+          break;
+        case 'rock':
+          this.stage_obj.animationControls.rockComponent(await this.component_obj, content.axis, content.angle, content.end, content.duration || 0);
+          break;
+        case 'spin':
+          this.stage_obj.animationControls.spinComponent(await this.component_obj, content.axis, content.angle, content.duration || 0);
+          break;
       }
     }
   }
@@ -152,9 +169,13 @@ export class ComponentView extends WidgetView {
       this.positions_changed();
     }
 
+	  let component_obj = await this.component_obj;
+
+    component_obj.setPosition(this.model.get('position'));
+    component_obj.setScale(this.model.get('scale'));
+
 	  this.representations_changed();
 
-	  let component_obj = await this.component_obj;
 	  let auto_view_duration = this.model.get('auto_view_duration');
 
 	  if (auto_view_duration !== null) {
@@ -165,8 +186,6 @@ export class ComponentView extends WidgetView {
       this.model.set('name', component_obj.name);
       this.model.save_changes();
     }
-
-    component_obj.setScale(this.model.get('scale'));
 
     component_obj.signals.nameChanged.add((name: string): void => {
       this.model.set('name', name || null);

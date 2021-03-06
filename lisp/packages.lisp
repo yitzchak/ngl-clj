@@ -78,6 +78,7 @@
     #:measurement
     #:metalness
     #:mode
+    #:move
     #:mouse-preset
     #:multiple-bond
     #:name
@@ -97,6 +98,7 @@
     #:quality
     #:quaternion
     #:radial-segments
+    #:radius-scale
     #:representation
     #:representations
     #:ribbon
