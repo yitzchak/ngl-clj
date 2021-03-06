@@ -183,27 +183,26 @@
     (let ((uuid (jupyter:make-uuid)))
       (setf (gethash uuid (callbacks instance)) callback)
       (jupyter-widgets:send-custom instance
-        (jupyter:json-new-obj
-          ("do" "make_image")
-          ("uuid" uuid)
-          ("factor" factor)
-          ("antialias" (if antialias :true :false))
-          ("transparent" (if transparent :true :false))
-          ("trim" (if trim :true :false)))))))
+        `(:object
+           ("do" . "make_image")
+           ("uuid" . ,uuid)
+           ("factor" . ,factor)
+           ("antialias" . ,(if antialias :true :false))
+           ("transparent" . ,(if transparent :true :false))
+           ("trim" . ,(if trim :true :false)))))))
 
 
 (defmethod jupyter-widgets:on-custom-message ((instance stage) content buffers)
-  (alexandria:switch ((jupyter:json-getf content "event") :test #'string=)
+  (alexandria:switch ((gethash "event" content) :test #'string=)
     ("image"
       (bordeaux-threads:with-lock-held ((callbacks-lock instance))
-        (funcall (gethash (jupyter:json-getf content "uuid") (callbacks instance))
+        (funcall (gethash (gethash "uuid" content) (callbacks instance))
                  (first buffers)
-                 (jupyter:json-getf content "type"))
-        (remhash (jupyter:json-getf content "uuid") (callbacks instance))))
+                 (gethash "type" content))
+        (remhash (gethash "uuid" content) (callbacks instance))))
     ("pick"
-      (let ((data (jupyter:json-to-nested-plist (jupyter:json-getf content "data") :symbol-case :snake)))
+      (let ((data (gethash "data" content)))
         (dolist (handler (on-pick instance))
-                ()
           (funcall handler instance data))))
     (otherwise
       (call-next-method))))
