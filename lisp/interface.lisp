@@ -19,7 +19,7 @@
 (defun auto-view (instance &optional (duration 0))
   (check-type instance (or stage component))
   (jupyter-widgets:send-custom instance
-                               `(:object
+                               `(:object-alist
                                   ("do" . "auto_view")
                                   ("duration" . ,duration)))
   (values))
@@ -28,7 +28,7 @@
 (defun move (instance to &optional (duration 0))
   (check-type instance (or stage component))
   (jupyter-widgets:send-custom instance
-                               `(:object
+                               `(:object-alist
                                   ("do" . "move")
                                   ("to" . ,to)
                                   ("duration" . ,duration)))
@@ -38,7 +38,7 @@
 #+(or)(defun rock (instance axis angle end &optional (duration 0))
   (check-type instance (or stage component))
   (jupyter-widgets:send-custom instance
-                               `(:object
+                               `(:object-alist
                                   ("do" . "rock")
                                   ("axis" . ,axis)
                                   ("angle" . ,angle)
@@ -50,7 +50,7 @@
 #+(or)(defun spin (instance axis angle end &optional (duration 0))
   (check-type instance (or stage component))
   (jupyter-widgets:send-custom instance
-                               `(:object
+                               `(:object-alist
                                   ("do" . "spin")
                                   ("axis" . ,axis)
                                   ("angle" . ,angle)

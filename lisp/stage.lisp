@@ -183,7 +183,7 @@
     (let ((uuid (jupyter:make-uuid)))
       (setf (gethash uuid (callbacks instance)) callback)
       (jupyter-widgets:send-custom instance
-        `(:object
+        `(:object-alist
            ("do" . "make_image")
            ("uuid" . ,uuid)
            ("factor" . ,factor)

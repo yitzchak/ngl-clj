@@ -100,7 +100,7 @@
 
 (defun update-position (instance coordinates)
   (jupyter-widgets:send-custom instance
-                               '(:object
+                               '(:object-alist
                                   ("do" . "update_position"))
                                (list coordinates))
   (values))
