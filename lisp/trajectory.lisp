@@ -70,13 +70,16 @@
 
 
 (defmethod play ((instance trajectory))
-  (setf (is-running instance) t))
+  (jupyter-widgets:send-custom instance '(:object-plist "do" "play"))
+  (values))
 
 
 (defmethod pause ((instance trajectory))
-  (setf (is-running instance) nil))
+  (jupyter-widgets:send-custom instance '(:object-plist "do" "pause"))
+  (values))
 
 
 (defmethod stop ((instance trajectory))
-  (setf (is-running instance) nil))
+  (jupyter-widgets:send-custom instance '(:object-plist "do" "stop"))
+  (values))
 

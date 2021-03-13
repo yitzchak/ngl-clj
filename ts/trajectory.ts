@@ -41,13 +41,16 @@ export class TrajectoryModel extends WidgetModel {
 }
 
 export class TrajectoryView extends WidgetView {
+  stage_obj: any;
   component_obj: any;
   trajectory_obj: any;
   rendered = false;
 
   initialize(parameters: any): void {
     super.initialize(parameters);
+    this.stage_obj = this.options.stage_obj;
     this.component_obj = this.options.component_obj;
+    this.model.on('msg:custom', this.handle_custom_message.bind(this));
     this.model.on('change:is_running',
                   (event: any) => {
                     if (this.trajectory_obj) {
@@ -61,7 +64,7 @@ export class TrajectoryView extends WidgetView {
                         }
                       }
                     }
-                  });
+                  }, this);
     this.model.on_some_change([
       'step',
       'timeout',
@@ -69,7 +72,7 @@ export class TrajectoryView extends WidgetView {
       'interpolate_step',
       'mode',
       'direction',
-    ], this.update_player_parameters, this);
+    ], this.update_player_parameters.bind, this);
   }
 
   update_player_parameters(): void {
@@ -81,6 +84,22 @@ export class TrajectoryView extends WidgetView {
                                        'mode': null,
                                        'direction': null });
       this.trajectory_obj.trajectory.player.setParameters(params);
+    }
+  }
+
+  handle_custom_message(content: any): void {
+    if (this.trajectory_obj) {
+      switch (content.do) {
+        case 'play':
+          this.trajectory_obj.trajectory.player.play();
+          break;
+        case 'pause':
+          this.trajectory_obj.trajectory.player.pause();
+          break;
+        case 'stop':
+          this.trajectory_obj.trajectory.player.stop();
+          break;
+      }
     }
   }
 
@@ -106,7 +125,7 @@ export class TrajectoryView extends WidgetView {
     var value: any = this.model.get('value');
     let params: any = {};
 
-    if (this.model.get('ext')) {
+    if (value && this.model.get('ext')) {
       params.ext = this.model.get('ext');
     	value = new Blob([(value instanceof DataView) ? value.buffer : value],
     	                 { type: (typeof value === 'string' || value instanceof String)
@@ -114,13 +133,17 @@ export class TrajectoryView extends WidgetView {
     	                            : 'application/octet-binary' });
     }
 
-    this.trajectory_obj = await this.component_obj.addTrajectory(await NGL.autoLoad(value, params),
-                                                                 this.get_parameters());
+    if (value === null) { // Trajectory associated with the structure
+      this.trajectory_obj = await this.component_obj.addTrajectory('', this.get_parameters());
+    } else { // Trajectory passed by value or normal NGL remote trajectory
+      this.trajectory_obj = await this.component_obj.addTrajectory(await NGL.autoLoad(value, params),
+                                                                   this.get_parameters());
+    }
   }
 
   async render() {
     super.render();
-    if (this.component_obj && !this.trajectory_obj && !this.rendered && this.model.get('value')) {
+    if (this.component_obj && !this.trajectory_obj && !this.rendered) {
       this.rendered = true;
       await this.load_file();
   	  this.wire_view();

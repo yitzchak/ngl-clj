@@ -1,6 +1,6 @@
 {
   "name": "ngl-clj",
-  "version": "0.5.7",
+  "version": "0.5.14",
   "description": "A ngl Widget for Common Lisp Jupyter",
   "keywords": [
     "nglview",
