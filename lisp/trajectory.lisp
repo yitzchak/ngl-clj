@@ -26,6 +26,16 @@
      :initarg :step
      :initform nil
      :trait :int)
+   (start
+     :accessor start
+     :initarg :start
+     :initform 0
+     :trait :int)
+   (end
+     :accessor end
+     :initarg :end
+     :initform 0
+     :trait :int)
    (timeout
      :accessor timeout
      :initarg :default-timeout
@@ -55,7 +65,19 @@
      :accessor is-running
      :initarg :is-running
      :initform nil
-     :trait :bool))
+     :trait :bool)
+   (trajectory-count
+     :accessor trajectory-count
+     :initarg :trajectory-count
+     :initform (lambda (instance)
+                 (declare (ignore instance))
+                 0))
+   (trajectory-frame
+     :accessor trajectory-frame
+     :initarg :trajectory-frame
+     :initform (lambda (instance i atom-indices)
+                 (declare (ignore instance i atom-indices))
+                 (values i nil #() 0))))
   (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
@@ -82,4 +104,31 @@
 (defmethod stop ((instance trajectory))
   (jupyter-widgets:send-custom instance '(:object-plist "do" "stop"))
   (values))
+
+
+(defmethod jupyter-widgets:on-custom-message ((instance trajectory) content buffers)
+  (declare (ignore buffers))
+  (alexandria:switch ((gethash "event" content) :test #'string=)
+    ("count"
+      (jupyter-widgets:send-custom instance
+                                   `(:object-plist "do" "count"
+                                                   "count" ,(funcall (trajectory-count instance)
+                                                                     instance))))
+    ("frame"
+      (multiple-value-bind (i box coords count)
+                           (funcall (trajectory-frame instance)
+                                    instance
+                                    (gethash "i" content)
+                                    (gethash "atom_indices" content))
+        (jupyter-widgets:send-custom instance
+                                     `(:object-plist "do" "frame"
+                                                     "i" ,i
+                                                     "box" ,(or box :null)
+                                                     "count" ,count)
+                                     (list coords))))
+
+    (otherwise
+      (call-next-method))))
+
+
 

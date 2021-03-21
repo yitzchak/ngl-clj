@@ -21,6 +21,7 @@ export class TrajectoryModel extends WidgetModel {
       direction: 'forward',
       ext: null,
       frame: 0,
+      count: 0,
       interpolate_step: 5,
       interpolate_type: "",
       is_running: false,
@@ -29,6 +30,8 @@ export class TrajectoryModel extends WidgetModel {
       step: null,
       timeout: 50,
       value: null,
+      start: 0,
+      end: 0,
 
       _model_name: 'TrajectoryModel',
       _model_module: MODULE_NAME,
@@ -45,34 +48,47 @@ export class TrajectoryView extends WidgetView {
   component_obj: any;
   trajectory_obj: any;
   rendered = false;
+  count_callbacks: Function[] = [];
+  frame_callbacks: Function[] = [];
 
   initialize(parameters: any): void {
     super.initialize(parameters);
     this.stage_obj = this.options.stage_obj;
     this.component_obj = this.options.component_obj;
     this.model.on('msg:custom', this.handle_custom_message.bind(this));
-    this.model.on('change:is_running',
-                  (event: any) => {
-                    if (this.trajectory_obj) {
-                      if (event.changed.is_running) {
-                        if (!this.trajectory_obj.trajectory.player.isRunning) {
-                          this.trajectory_obj.trajectory.player.play();
-                        }
-                      } else {
-                        if (this.trajectory_obj.trajectory.player.isRunning) {
-                          this.trajectory_obj.trajectory.player.pause();
-                        }
-                      }
-                    }
-                  }, this);
+    this.model.on('change:is_running', this.change_is_running.bind(this));
+    this.model.on('change:frame', this.change_frame.bind(this));
     this.model.on_some_change([
       'step',
       'timeout',
       'interpolate_type',
       'interpolate_step',
+      'start',
+      'end',
       'mode',
       'direction',
-    ], this.update_player_parameters.bind, this);
+    ], this.update_player_parameters, this);
+  }
+
+  change_is_running(event: any): void {
+    if (this.trajectory_obj) {
+      if (event.changed.is_running) {
+        if (!this.trajectory_obj.trajectory.player.isRunning) {
+          this.trajectory_obj.trajectory.player.play();
+        }
+      } else {
+        if (this.trajectory_obj.trajectory.player.isRunning) {
+          this.trajectory_obj.trajectory.player.pause();
+        }
+      }
+    }
+  }
+
+  change_frame(event: any): void {
+    if (this.trajectory_obj && this.trajectory_obj.trajectory.frame !== event.changed.frame) {
+      this.trajectory_obj.trajectory.player.is_running = false;
+      this.trajectory_obj.trajectory.player.setFrame(event.changed.frame);
+    }
   }
 
   update_player_parameters(): void {
@@ -82,12 +98,16 @@ export class TrajectoryView extends WidgetView {
                                        'interpolateType': null,
                                        'interpolateStep': null,
                                        'mode': null,
+                                       'start': null,
+                                       'end': null,
                                        'direction': null });
       this.trajectory_obj.trajectory.player.setParameters(params);
     }
   }
 
-  handle_custom_message(content: any): void {
+  handle_custom_message(content: any, buffers: DataView[]): void {
+    var cb;
+
     if (this.trajectory_obj) {
       switch (content.do) {
         case 'play':
@@ -98,6 +118,14 @@ export class TrajectoryView extends WidgetView {
           break;
         case 'stop':
           this.trajectory_obj.trajectory.player.stop();
+          break;
+        case 'count':
+          cb = this.count_callbacks.pop();
+          if (cb) cb(content.count);
+          break;
+        case 'frame':
+          cb = this.frame_callbacks.pop();
+          if (cb) cb(content.i, content.box, new Float32Array(buffers[0].buffer), content.count);
           break;
       }
     }
@@ -119,6 +147,26 @@ export class TrajectoryView extends WidgetView {
       this.model.set('name', name);
       this.model.save_changes();
     });
+
+    this.trajectory_obj.signals.frameChanged.add((frame: number): void => {
+      this.model.set('frame', frame);
+      this.model.save_changes();
+    });
+
+    this.trajectory_obj.signals.countChanged.add((count: number): void => {
+      this.model.set('count', count);
+      this.model.save_changes();
+    });
+
+    this.trajectory_obj.trajectory.player.signals.startedRunning.add((): void => {
+      this.model.set('is_running', true);
+      this.model.save_changes();
+    });
+
+    this.trajectory_obj.trajectory.player.signals.haltedRunning.add((): void => {
+      this.model.set('is_running', false);
+      this.model.save_changes();
+    });
   }
 
   async load_file(): Promise<any> {
@@ -135,9 +183,21 @@ export class TrajectoryView extends WidgetView {
 
     if (value === null) { // Trajectory associated with the structure
       this.trajectory_obj = await this.component_obj.addTrajectory('', this.get_parameters());
+    } else if (value.startsWith('jupyter:')) { // Jupyter remote trajectory
+      this.trajectory_obj = await this.component_obj.addTrajectory(this.request.bind(this), this.get_parameters());
     } else { // Trajectory passed by value or normal NGL remote trajectory
       this.trajectory_obj = await this.component_obj.addTrajectory(await NGL.autoLoad(value, params),
                                                                    this.get_parameters());
+    }
+  }
+
+  request(callback: Function, i?: number, atom_indices?: number[][]): void {
+    if (typeof i === 'number') {
+      this.frame_callbacks.push(callback);
+      this.send({ event: 'frame', i, atom_indices }, []);
+    } else {
+      this.count_callbacks.push(callback);
+      this.send({ event: 'count' }, []);
     }
   }
 

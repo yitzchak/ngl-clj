@@ -49,6 +49,7 @@
     #:direction
     #:disable-impostor
     #:disable-picking
+    #:end
     #:ext
     #:filter-sele
     #:flat-shaded
@@ -78,8 +79,8 @@
     #:measurement
     #:metalness
     #:mode
-    #:move
     #:mouse-preset
+    #:move
     #:multiple-bond
     #:name
     #:on-pick
@@ -117,6 +118,7 @@
     #:sphere-detail
     #:spin
     #:stage
+    #:start
     #:%step
     #:stop
     #:structure
@@ -129,6 +131,8 @@
     #:tooltip
     #:trajectories
     #:trajectory
+    #:trajectory-count
+    #:trajectory-frame
     #:update-position
     #:use-interior-color
     #:use-worker
