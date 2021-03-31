@@ -57,7 +57,7 @@ export class TrajectoryView extends WidgetView {
     this.component_obj = this.options.component_obj;
     this.model.on('msg:custom', this.handle_custom_message.bind(this));
     this.model.on('change:is_running', this.change_is_running.bind(this));
-    this.model.on('change:frame', this.change_frame.bind(this));
+    //this.model.on('change:frame', this.change_frame.bind(this));
     this.model.on_some_change([
       'step',
       'timeout',
@@ -87,7 +87,7 @@ export class TrajectoryView extends WidgetView {
   change_frame(event: any): void {
     if (this.trajectory_obj && this.trajectory_obj.trajectory.frame !== event.changed.frame) {
       this.trajectory_obj.trajectory.player.is_running = false;
-      this.trajectory_obj.trajectory.player.setFrame(event.changed.frame);
+      this.trajectory_obj.trajectory.setFrame(event.changed.frame);
     }
   }
 

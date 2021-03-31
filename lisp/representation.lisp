@@ -270,8 +270,6 @@
   (:default-initargs
     :%model-name "CartoonModel"))
 
-(jupyter-widgets:register-widget cartoon)
-
 
 (defclass ball-and-stick (structure-representation)
   (#+(or)(aspect-ratio
@@ -336,8 +334,6 @@
     :color-scheme "element"
     :%model-name "BallAndStickModel"))
 
-(jupyter-widgets:register-widget ball-and-stick)
-
 
 (defclass backbone (ball-and-stick)
   ()
@@ -345,8 +341,6 @@
   (:documentation "")
   (:default-initargs
     :%model-name "BackboneModel"))
-
-(jupyter-widgets:register-widget backbone)
 
 
 (defclass base (ball-and-stick)
@@ -356,8 +350,6 @@
   (:default-initargs
     :%model-name "BaseModel"))
 
-(jupyter-widgets:register-widget base)
-
 
 (defclass licorice (ball-and-stick)
   ()
@@ -365,8 +357,6 @@
   (:documentation "")
   (:default-initargs
     :%model-name "LicoriceModel"))
-
-(jupyter-widgets:register-widget licorice)
 
 
 (defclass line (structure-representation)
@@ -377,8 +367,6 @@
     :color-scheme "element"
     :flat-shaded :null
     :%model-name "LineModel"))
-
-(jupyter-widgets:register-widget line)
 
 
 (defclass measurement (representation)
@@ -419,8 +407,6 @@
   (:default-initargs
     :%model-name "DihedralModel"))
 
-(jupyter-widgets:register-widget dihedral)
-
 
 (defclass ribbon (structure-representation)
   ()
@@ -428,8 +414,6 @@
   (:documentation "")
   (:default-initargs
     :%model-name "RibbonModel"))
-
-(jupyter-widgets:register-widget ribbon)
 
 
 (defclass spacefill (structure-representation)
@@ -439,8 +423,6 @@
   (:default-initargs
     :color-scheme "element"
     :%model-name "SpacefillModel"))
-
-(jupyter-widgets:register-widget spacefill)
 
 
 (defclass surface (structure-representation)
@@ -514,6 +496,4 @@
   (:documentation "")
   (:default-initargs
     :%model-name "SurfaceModel"))
-
-(jupyter-widgets:register-widget surface)
 

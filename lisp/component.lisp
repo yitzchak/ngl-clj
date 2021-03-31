@@ -80,8 +80,6 @@
                            (make-instance 'base)
                            (make-instance 'ball-and-stick :sele "ligand"))))
 
-(jupyter-widgets:register-widget structure)
-
 
 (defmethod play ((instance structure))
   (dolist (trajectory (trajectories instance) (values))

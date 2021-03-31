@@ -170,8 +170,6 @@
     :%view-module +module-name+
     :%view-module-version +module-version+))
 
-(jupyter-widgets:register-widget stage)
-
 
 (defmethod initialize-instance :after ((instance stage) &rest initargs &key &allow-other-keys)
   (declare (ignore initargs))

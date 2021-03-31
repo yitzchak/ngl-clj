@@ -15,4 +15,5 @@
          (:file "representation")
          (:file "trajectory")
          (:file "component")
-         (:file "stage")))))
+         (:file "stage")
+         (:file "register-widgets")))))

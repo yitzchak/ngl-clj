@@ -88,8 +88,6 @@
     :%view-module +module-name+
     :%view-module-version +module-version+))
 
-(jupyter-widgets:register-widget trajectory)
-
 
 (defmethod play ((instance trajectory))
   (jupyter-widgets:send-custom instance '(:object-plist "do" "play"))
