@@ -151,6 +151,15 @@ export class ComponentView extends WidgetView {
           (await this.component_obj).structure.updatePosition(new Float32Array(buffers[0].buffer));
           (await this.component_obj).updateRepresentations({ position: true });
           break;
+        case 'remove_all_measurements':
+          (await this.component_obj).removeAllMeasurements();
+          break;
+        case 'remove_measurement':
+          (await this.component_obj).removeMeasurement(content.atoms);
+          break;
+        case 'add_measurement':
+          (await this.component_obj).addMeasurement(content.atoms);
+          break;
         case 'move':
           this.stage_obj.animationControls.moveComponent(await this.component_obj, content.to, content.duration || 0);
           break;
@@ -169,18 +178,18 @@ export class ComponentView extends WidgetView {
       this.positions_changed();
     }
 
-	  let component_obj = await this.component_obj;
+    let component_obj = await this.component_obj;
 
     component_obj.setPosition(this.model.get('position'));
     component_obj.setScale(this.model.get('scale'));
 
-	  this.representations_changed();
+    this.representations_changed();
 
-	  let auto_view_duration = this.model.get('auto_view_duration');
+    let auto_view_duration = this.model.get('auto_view_duration');
 
-	  if (auto_view_duration !== null) {
+    if (auto_view_duration !== null) {
       component_obj.autoView(auto_view_duration);
-	  }
+    }
 
     if (component_obj.name != this.model.get('name')) {
       this.model.set('name', component_obj.name);
@@ -264,22 +273,41 @@ export class StructureView extends ComponentView {
     var value: any = this.model.get('value');
 
     if (this.model.get('ext')) {
-    	value = new Blob([value],
-    	                 { type: (typeof value === 'string' || value instanceof String)
-    	                            ? 'text/plain'
-    	                            : 'application/octet-binary' });
+      value = new Blob([value],
+                       { type: (typeof value === 'string' || value instanceof String)
+                                  ? 'text/plain'
+                                  : 'application/octet-binary' });
     }
 
     return this.stage_obj.loadFile(value, this.get_parameters());
   }
 
   async render() {
-    if (!this.component_obj) {
+    if (!this.stage_obj) {
+      this.el.textContent = "Add to stage widget to visualize."
+    } else if (!this.component_obj) {
       super.render();
       this.component_obj = this.load_file();
-  	  this.change_trajectories();
-  	  this.wire_component();
+      this.change_trajectories();
+      this.wire_component();
     }
+  }
+
+  async wire_component(): Promise<void> {
+    await super.wire_component();
+    var component_obj = await this.component_obj;
+    component_obj.spacefillRepresentation.signals.parametersChanged.add((value: any) => {
+      if (value.sele && value.sele[0] === '@') {
+        var atomProxy = component_obj.structure.getAtomProxy();
+        this.options.parent.send({
+          event: 'select',
+          data: value.sele.substring(1).split(',').map((indexStr: string): any => {
+            atomProxy.index = parseInt(indexStr);
+            return atomProxy.toObject();
+          })
+        });
+      }
+    });
   }
 }
 
@@ -358,7 +386,7 @@ export class ShapeView extends ComponentView {
         }
       }
       this.component_obj = this.stage_obj.addComponentFromObject(shape, this.get_parameters());
-  	  this.wire_component();
+      this.wire_component();
     }
   }
 }

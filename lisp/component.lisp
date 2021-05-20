@@ -98,9 +98,32 @@
 
 (defun update-position (instance coordinates)
   (jupyter-widgets:send-custom instance
-                               '(:object-alist
-                                  ("do" . "update_position"))
+                               (list :object-plist
+                                     "do" "update_position")
                                (list coordinates))
+  (values))
+
+
+(defun remove-all-measurements (instance)
+  (jupyter-widgets:send-custom instance
+                               (list :object-plist
+                                     "do" "remove_all_measurements"))
+  (values))
+
+
+(defun remove-measurement (instance atoms)
+  (jupyter-widgets:send-custom instance
+                               (list :object-plist
+                                     "do" "remove_measurement"
+                                     "atoms" (or atoms :empty-array)))
+  (values))
+
+
+(defun add-measurement (instance atoms)
+  (jupyter-widgets:send-custom instance
+                               (list :object-plist
+                                     "do" "add_measurement"
+                                     "atoms" (or atoms :empty-array)))
   (values))
 
 

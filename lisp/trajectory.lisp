@@ -21,10 +21,15 @@
      :initarg :frame
      :initform 0
      :trait :int)
+   (count
+     :accessor %count
+     :initarg :count
+     :initform 0
+     :trait :int)
    (step
      :accessor %step
      :initarg :step
-     :initform nil
+     :initform 1
      :trait :int)
    (start
      :accessor start

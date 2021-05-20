@@ -155,6 +155,10 @@
      :accessor on-pick
      :initarg :on-pick
      :initform nil)
+   (on-select
+     :accessor on-select
+     :initarg :on-select
+     :initform nil)
    (callbacks-lock
      :accessor callbacks-lock)
    (callbacks
@@ -202,6 +206,10 @@
       (let ((data (gethash "data" content)))
         (dolist (handler (on-pick instance))
           (funcall handler instance data))))
+    ("select"
+      (let ((data (gethash "data" content)))
+        (dolist (handler (on-select instance))
+          (funcall handler instance data))))
     (otherwise
       (call-next-method))))
 
@@ -223,5 +231,9 @@
 
 (defun on-stage-pick (instance handler)
   (push handler (on-pick instance)))
+
+
+(defun on-stage-select (instance handler)
+  (push handler (on-select instance)))
 
 

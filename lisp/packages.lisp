@@ -2,6 +2,7 @@
   (:use #:common-lisp)
   (:shadow #:structure)
   (:export
+    #:add-measurement
     #:ambient-color
     #:ambient-intensity
     #:aspect-ratio
@@ -40,6 +41,7 @@
     #:component
     #:components
     #:contour
+    #:%count
     #:cutoff
     #:cylinder-only
     #:depth-write
@@ -84,7 +86,9 @@
     #:multiple-bond
     #:name
     #:on-pick
+    #:on-select
     #:on-stage-pick
+    #:on-stage-select
     #:opacity
     #:opaque-back
     #:open-ended
@@ -100,6 +104,8 @@
     #:quaternion
     #:radial-segments
     #:radius-scale
+    #:remove-all-measurements
+    #:remove-measurement
     #:representation
     #:representations
     #:ribbon
