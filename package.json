@@ -1,6 +1,6 @@
 {
   "name": "ngl-clj",
-  "version": "0.6.11",
+  "version": "0.7.0",
   "description": "A ngl Widget for Common Lisp Jupyter",
   "keywords": [
     "nglview",
@@ -31,7 +31,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "lab-install": "yarn pack -f ngl-clj.tgz && jupyter-labextension install --no-build ngl-clj.tgz && sleep 5 && jupyter-lab build",
+    "lab-install": "yarn pack -f ngl-clj.tgz && jupyter-labextension install --no-build ngl-clj.tgz && sleep 5 && jupyter-lab build --dev-build=True",
     "lint": "eslint . --ext .ts --fix",
     "lint-check": "eslint . --ext .ts",
     "prepack": "yarn run build"
