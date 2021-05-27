@@ -1,10 +1,11 @@
 (defpackage #:ngl
   (:use #:common-lisp)
-  (:shadow #:structure)
+  (:shadow #:position #:structure)
   (:export
     #:add-measurement
     #:ambient-color
     #:ambient-intensity
+    #:annotation
     #:aspect-ratio
     #:assembly
     #:atom-quad
@@ -85,6 +86,7 @@
     #:move
     #:multiple-bond
     #:name
+    #:offset
     #:on-pick
     #:on-select
     #:on-stage-pick
@@ -96,7 +98,7 @@
     #:pause
     #:pick-filter
     #:play
-    #:%position
+    #:position
     #:positions
     #:primitives
     #:probe-radius

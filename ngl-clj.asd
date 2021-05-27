@@ -1,6 +1,6 @@
 (asdf:defsystem #:ngl-clj
   :description "A nglview widget for Common Lisp Jupyter."
-  :version "0.7.0"
+  :version "0.7.6"
   :author "Tarn W. Burton"
   :license "MIT"
   :depends-on
@@ -12,6 +12,7 @@
         ((:file "packages")
          (:file "version")
          (:file "interface")
+         (:file "annotation")
          (:file "representation")
          (:file "trajectory")
          (:file "component")

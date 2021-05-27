@@ -7,7 +7,7 @@
      :initarg :name
      :trait :string)
    (position
-     :accessor %position
+     :accessor position
      :initarg :position
      :initform #(0s0 0s0 0s0)
      :trait :float-vector)
@@ -16,6 +16,11 @@
      :initarg :auto-view-duration
      :initform nil
      :trait :int)
+   (annotations
+     :accessor annotations
+     :initarg :annotations
+     :initform nil
+     :trait :widget-list)
    (representations
      :accessor representations
      :initarg :representations

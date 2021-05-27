@@ -29,6 +29,7 @@ export class ComponentModel extends WidgetModel {
       positions: null,
       quaternion: [0.0, 0.0, 0.0, 0.0],
       scale: 1.0,
+      annotations: [],
       representations: [],
 
       _model_module: MODULE_NAME,
@@ -39,6 +40,7 @@ export class ComponentModel extends WidgetModel {
   }
 
   static serializers: ISerializers = {
+    annotations: { deserialize: widgets.unpack_models },
     representations: { deserialize: widgets.unpack_models },
     positions: {
       deserialize: (value: any): Float32Array | null => {
@@ -55,7 +57,9 @@ export class ComponentModel extends WidgetModel {
 export class ComponentView extends WidgetView {
   stage_obj: any;
   component_obj: Promise<any> | null = null;
+  annotationViews: any;
   representationViews: any;
+  in_annotations_changing = false;
   in_representations_changing = false;
   rendered = false;
 
@@ -63,12 +67,18 @@ export class ComponentView extends WidgetView {
     super.initialize(parameters);
     this.stage_obj = this.options.stage_obj;
 
+    this.annotationViews = new ViewSet(
+      this.create_ngl_child_view,
+      this.remove_ngl_child_view,
+      this
+    );
     this.representationViews = new ViewSet(
       this.create_ngl_child_view,
       this.remove_ngl_child_view,
       this
     );
     this.model.on('msg:custom', this.handle_custom_message.bind(this));
+    this.model.on('change:annotations', this.annotations_changed, this);
     this.model.on('change:representations', this.representations_changed, this);
     this.model.on('change:visible', this.visible_changed.bind(this));
     this.model.on('change:positions', this.positions_changed, this);
@@ -135,6 +145,18 @@ export class ComponentView extends WidgetView {
     this.in_representations_changing = false;
   }
 
+  async annotations_changed() {
+    this.in_annotations_changing = true;
+
+    let views = await this.annotationViews.update(this.model.get('annotations'));
+
+    for (let view of views) {
+      await view.render();
+    }
+
+    this.in_annotations_changing = false;
+  }
+
   async visible_changed() {
     if (this.component_obj) {
       (await this.component_obj).setVisibility(this.model.get('visible'));
@@ -183,6 +205,7 @@ export class ComponentView extends WidgetView {
     component_obj.setPosition(this.model.get('position'));
     component_obj.setScale(this.model.get('scale'));
 
+    this.annotations_changed();
     this.representations_changed();
 
     let auto_view_duration = this.model.get('auto_view_duration');
