@@ -23,7 +23,6 @@ export class RepresentationModel extends WidgetModel {
       clip_center: [0, 0, 0],
       clip_near: 0,
       clip_radius: 0,
-      color:
       color_domain: undefined,
       color_mode: 'hcl',
       color_reverse: false,
