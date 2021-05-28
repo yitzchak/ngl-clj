@@ -106,6 +106,7 @@
     #:quaternion
     #:radial-segments
     #:radius-scale
+    #:radius-size
     #:remove-all-measurements
     #:remove-measurement
     #:representation
@@ -141,6 +142,7 @@
     #:trajectory
     #:trajectory-count
     #:trajectory-frame
+    #:unitcell
     #:update-position
     #:use-interior-color
     #:use-worker

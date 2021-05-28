@@ -497,3 +497,18 @@
   (:default-initargs
     :%model-name "SurfaceModel"))
 
+
+(defclass unitcell (structure-representation)
+  ((radius-size
+     :accessor radius-size
+     :initarg :radius-size
+     :initform 0.5s0
+     :trait :float
+     :documentation ""))
+  (:metaclass jupyter-widgets:trait-metaclass)
+  (:documentation "")
+  (:default-initargs
+    :%model-name "UnitcellModel"))
+
+
+

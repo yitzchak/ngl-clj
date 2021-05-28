@@ -23,6 +23,7 @@ export class RepresentationModel extends WidgetModel {
       clip_center: [0, 0, 0],
       clip_near: 0,
       clip_radius: 0,
+      color:
       color_domain: undefined,
       color_mode: 'hcl',
       color_reverse: false,
@@ -342,6 +343,20 @@ export class SurfaceModel extends StructureRepresentationModel {
 
       _type: 'surface',
       _model_name: 'SurfaceModel'
+    };
+  }
+}
+
+
+export class UnitcellModel extends StructureRepresentationModel {
+  defaults(): any {
+    return {
+      ...super.defaults(),
+
+      radius_size: 0.5,
+
+      _type: 'unitcell',
+      _model_name: 'UnitcellModel'
     };
   }
 }
