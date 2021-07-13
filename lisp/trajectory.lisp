@@ -1,7 +1,7 @@
 (in-package #:ngl)
 
 
-(jupyter-widgets:defwidget trajectory (jupyter-widgets:widget)
+(jupyter/widgets:defwidget trajectory (jupyter/widgets:widget)
   ((name
      :accessor name
      :initarg :name
@@ -94,25 +94,25 @@
 
 
 (defmethod play ((instance trajectory))
-  (jupyter-widgets:send-custom instance '(:object-plist "do" "play"))
+  (jupyter/widgets:send-custom instance '(:object-plist "do" "play"))
   (values))
 
 
 (defmethod pause ((instance trajectory))
-  (jupyter-widgets:send-custom instance '(:object-plist "do" "pause"))
+  (jupyter/widgets:send-custom instance '(:object-plist "do" "pause"))
   (values))
 
 
 (defmethod stop ((instance trajectory))
-  (jupyter-widgets:send-custom instance '(:object-plist "do" "stop"))
+  (jupyter/widgets:send-custom instance '(:object-plist "do" "stop"))
   (values))
 
 
-(defmethod jupyter-widgets:on-custom-message ((instance trajectory) content buffers)
+(defmethod jupyter/widgets:on-custom-message ((instance trajectory) content buffers)
   (declare (ignore buffers))
   (alexandria:switch ((gethash "event" content) :test #'string=)
     ("count"
-      (jupyter-widgets:send-custom instance
+      (jupyter/widgets:send-custom instance
                                    `(:object-plist "do" "count"
                                                    "count" ,(funcall (trajectory-count instance)
                                                                      instance))))
@@ -122,7 +122,7 @@
                                     instance
                                     (gethash "i" content)
                                     (gethash "atom_indices" content))
-        (jupyter-widgets:send-custom instance
+        (jupyter/widgets:send-custom instance
                                      `(:object-plist "do" "frame"
                                                      "i" ,i
                                                      "box" ,(or box :null)

@@ -1,7 +1,7 @@
 (in-package #:ngl)
 
 
-(jupyter-widgets:defwidget component (jupyter-widgets:widget)
+(jupyter/widgets:defwidget component (jupyter/widgets:widget)
   ((name
      :accessor name
      :initarg :name
@@ -49,7 +49,7 @@
     :%view-module-version +module-version+))
 
 
-(jupyter-widgets:defwidget structure (component)
+(jupyter/widgets:defwidget structure (component)
   ((ext
      :accessor ext
      :initarg :ext
@@ -100,7 +100,7 @@
 
 
 (defun update-position (instance coordinates)
-  (jupyter-widgets:send-custom instance
+  (jupyter/widgets:send-custom instance
                                (list :object-plist
                                      "do" "update_position")
                                (list coordinates))
@@ -108,14 +108,14 @@
 
 
 (defun remove-all-measurements (instance)
-  (jupyter-widgets:send-custom instance
+  (jupyter/widgets:send-custom instance
                                (list :object-plist
                                      "do" "remove_all_measurements"))
   (values))
 
 
 (defun remove-measurement (instance atoms)
-  (jupyter-widgets:send-custom instance
+  (jupyter/widgets:send-custom instance
                                (list :object-plist
                                      "do" "remove_measurement"
                                      "atoms" (or atoms :empty-array)))
@@ -123,14 +123,14 @@
 
 
 (defun add-measurement (instance atoms)
-  (jupyter-widgets:send-custom instance
+  (jupyter/widgets:send-custom instance
                                (list :object-plist
                                      "do" "add_measurement"
                                      "atoms" (or atoms :empty-array)))
   (values))
 
 
-(jupyter-widgets:defwidget shape (component)
+(jupyter/widgets:defwidget shape (component)
   ((primitives
     :accessor primitives
     :initarg :primitives

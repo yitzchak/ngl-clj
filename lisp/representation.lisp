@@ -1,7 +1,7 @@
 (in-package #:ngl)
 
 
-(jupyter-widgets:defwidget representation (jupyter-widgets:widget)
+(jupyter/widgets:defwidget representation (jupyter/widgets:widget)
   ((clip-center
      :accessor clip-center
      :initarg :clip-center
@@ -199,7 +199,7 @@
     :%view-module-version +module-version+))
 
 
-(jupyter-widgets:defwidget buffer-representation (representation)
+(jupyter/widgets:defwidget buffer-representation (representation)
   ((buffer
      :accessor buffer
      :initarg :buffer
@@ -211,7 +211,7 @@
     :%view-name "BufferRepresentationView"))
 
 
-(jupyter-widgets:defwidget structure-representation (representation)
+(jupyter/widgets:defwidget structure-representation (representation)
   ((assembly
      :accessor assembly
      :initarg :assembly
@@ -231,7 +231,7 @@
   (:documentation ""))
 
 
-(jupyter-widgets:defwidget cartoon (structure-representation)
+(jupyter/widgets:defwidget cartoon (structure-representation)
   ((aspect-ratio
      :accessor aspect-ratio
      :initarg :aspect-ratio
@@ -267,7 +267,7 @@
     :%model-name "CartoonModel"))
 
 
-(jupyter-widgets:defwidget ball-and-stick (structure-representation)
+(jupyter/widgets:defwidget ball-and-stick (structure-representation)
   (#+(or)(aspect-ratio
      :accessor aspect-ratio
      :initarg :aspect-ratio
@@ -330,28 +330,28 @@
     :%model-name "BallAndStickModel"))
 
 
-(jupyter-widgets:defwidget backbone (ball-and-stick)
+(jupyter/widgets:defwidget backbone (ball-and-stick)
   ()
   (:documentation "")
   (:default-initargs
     :%model-name "BackboneModel"))
 
 
-(jupyter-widgets:defwidget base (ball-and-stick)
+(jupyter/widgets:defwidget base (ball-and-stick)
   ()
   (:documentation "")
   (:default-initargs
     :%model-name "BaseModel"))
 
 
-(jupyter-widgets:defwidget licorice (ball-and-stick)
+(jupyter/widgets:defwidget licorice (ball-and-stick)
   ()
   (:documentation "")
   (:default-initargs
     :%model-name "LicoriceModel"))
 
 
-(jupyter-widgets:defwidget line (structure-representation)
+(jupyter/widgets:defwidget line (structure-representation)
   ()
   (:documentation "")
   (:default-initargs
@@ -360,7 +360,7 @@
     :%model-name "LineModel"))
 
 
-(jupyter-widgets:defwidget measurement (representation)
+(jupyter/widgets:defwidget measurement (representation)
   ((label-size
      :accessor label-size
      :initarg :label-size
@@ -386,7 +386,7 @@
     :flat-shaded :null))
 
 
-(jupyter-widgets:defwidget dihedral (measurement)
+(jupyter/widgets:defwidget dihedral (measurement)
   ((atom-quad
      :accessor atom-quad
      :initarg :atom-quad
@@ -397,14 +397,14 @@
     :%model-name "DihedralModel"))
 
 
-(jupyter-widgets:defwidget ribbon (structure-representation)
+(jupyter/widgets:defwidget ribbon (structure-representation)
   ()
   (:documentation "")
   (:default-initargs
     :%model-name "RibbonModel"))
 
 
-(jupyter-widgets:defwidget spacefill (structure-representation)
+(jupyter/widgets:defwidget spacefill (structure-representation)
   ()
   (:documentation "")
   (:default-initargs
@@ -412,7 +412,7 @@
     :%model-name "SpacefillModel"))
 
 
-(jupyter-widgets:defwidget surface (structure-representation)
+(jupyter/widgets:defwidget surface (structure-representation)
   ((background
      :accessor background
      :initarg :background
@@ -484,7 +484,7 @@
     :%model-name "SurfaceModel"))
 
 
-(jupyter-widgets:defwidget unitcell (structure-representation)
+(jupyter/widgets:defwidget unitcell (structure-representation)
   ((radius-size
      :accessor radius-size
      :initarg :radius-size

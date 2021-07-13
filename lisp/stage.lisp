@@ -1,6 +1,6 @@
 (in-package #:ngl)
 
-(jupyter-widgets:defwidget stage (jupyter-widgets:dom-widget)
+(jupyter/widgets:defwidget stage (jupyter/widgets:dom-widget)
   ((impostor
      :accessor impostor
      :initarg :imposter
@@ -213,7 +213,7 @@
   (bordeaux-threads:with-lock-held ((callbacks-lock instance))
     (let ((uuid (jupyter:make-uuid)))
       (setf (gethash uuid (callbacks instance)) callback)
-      (jupyter-widgets:send-custom instance
+      (jupyter/widgets:send-custom instance
         `(:object-alist
            ("do" . "make_image")
            ("uuid" . ,uuid)
@@ -223,7 +223,7 @@
            ("trim" . ,(if trim :true :false)))))))
 
 
-(defmethod jupyter-widgets:on-custom-message ((instance stage) content buffers)
+(defmethod jupyter/widgets:on-custom-message ((instance stage) content buffers)
   (alexandria:switch ((gethash "event" content) :test #'string=)
     ("image"
       (bordeaux-threads:with-lock-held ((callbacks-lock instance))

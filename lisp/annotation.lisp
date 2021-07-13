@@ -1,7 +1,7 @@
 (in-package #:ngl)
 
 
-(jupyter-widgets:defwidget annotation (jupyter-widgets:widget)
+(jupyter/widgets:defwidget annotation (jupyter/widgets:widget)
   ((position
      :accessor position
      :initarg :position
