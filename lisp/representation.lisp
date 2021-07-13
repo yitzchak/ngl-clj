@@ -1,7 +1,7 @@
 (in-package #:ngl)
 
 
-(defclass representation (jupyter-widgets:widget)
+(jupyter-widgets:defwidget representation (jupyter-widgets:widget)
   ((clip-center
      :accessor clip-center
      :initarg :clip-center
@@ -190,7 +190,6 @@
      :initform nil
      :trait :bool
      :documentation "Render as wireframe"))
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
     :%model-module +module-name+
@@ -200,20 +199,19 @@
     :%view-module-version +module-version+))
 
 
-(defclass buffer-representation (representation)
+(jupyter-widgets:defwidget buffer-representation (representation)
   ((buffer
      :accessor buffer
      :initarg :buffer
      :initform nil
      :trait :plist-camel-case))
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
     :%model-name "BufferRepresentationModel"
     :%view-name "BufferRepresentationView"))
 
 
-(defclass structure-representation (representation)
+(jupyter-widgets:defwidget structure-representation (representation)
   ((assembly
      :accessor assembly
      :initarg :assembly
@@ -230,11 +228,10 @@
      :initarg :sele
      :initform ""
      :trait :string))
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation ""))
 
 
-(defclass cartoon (structure-representation)
+(jupyter-widgets:defwidget cartoon (structure-representation)
   ((aspect-ratio
      :accessor aspect-ratio
      :initarg :aspect-ratio
@@ -265,13 +262,12 @@
      :initarg :smooth-sheet
      :initform nil
      :trait :boolean))
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
     :%model-name "CartoonModel"))
 
 
-(defclass ball-and-stick (structure-representation)
+(jupyter-widgets:defwidget ball-and-stick (structure-representation)
   (#+(or)(aspect-ratio
      :accessor aspect-ratio
      :initarg :aspect-ratio
@@ -328,40 +324,35 @@
      :initarg :sphere-detail
      :initform 2
      :trait :int))
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
     :color-scheme "element"
     :%model-name "BallAndStickModel"))
 
 
-(defclass backbone (ball-and-stick)
+(jupyter-widgets:defwidget backbone (ball-and-stick)
   ()
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
     :%model-name "BackboneModel"))
 
 
-(defclass base (ball-and-stick)
+(jupyter-widgets:defwidget base (ball-and-stick)
   ()
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
     :%model-name "BaseModel"))
 
 
-(defclass licorice (ball-and-stick)
+(jupyter-widgets:defwidget licorice (ball-and-stick)
   ()
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
     :%model-name "LicoriceModel"))
 
 
-(defclass line (structure-representation)
+(jupyter-widgets:defwidget line (structure-representation)
   ()
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
     :color-scheme "element"
@@ -369,7 +360,7 @@
     :%model-name "LineModel"))
 
 
-(defclass measurement (representation)
+(jupyter-widgets:defwidget measurement (representation)
   ((label-size
      :accessor label-size
      :initarg :label-size
@@ -390,42 +381,38 @@
      :initarg :label-z-offset
      :initform 0.5d0
      :trait :float))
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
     :flat-shaded :null))
 
 
-(defclass dihedral (measurement)
+(jupyter-widgets:defwidget dihedral (measurement)
   ((atom-quad
      :accessor atom-quad
      :initarg :atom-quad
      :initform nil
      :trait :list))
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
     :%model-name "DihedralModel"))
 
 
-(defclass ribbon (structure-representation)
+(jupyter-widgets:defwidget ribbon (structure-representation)
   ()
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
     :%model-name "RibbonModel"))
 
 
-(defclass spacefill (structure-representation)
+(jupyter-widgets:defwidget spacefill (structure-representation)
   ()
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
     :color-scheme "element"
     :%model-name "SpacefillModel"))
 
 
-(defclass surface (structure-representation)
+(jupyter-widgets:defwidget surface (structure-representation)
   ((background
      :accessor background
      :initarg :background
@@ -492,20 +479,18 @@
      :initform t
      :trait :bool
      :documentation "Weather or not to triangulate the volume asynchronously in a Web Worker. For volume data only."))
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
     :%model-name "SurfaceModel"))
 
 
-(defclass unitcell (structure-representation)
+(jupyter-widgets:defwidget unitcell (structure-representation)
   ((radius-size
      :accessor radius-size
      :initarg :radius-size
      :initform 0.5s0
      :trait :float
      :documentation ""))
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
     :%model-name "UnitcellModel"))

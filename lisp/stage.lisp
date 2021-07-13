@@ -1,6 +1,6 @@
 (in-package #:ngl)
 
-(defclass stage (jupyter-widgets:dom-widget)
+(jupyter-widgets:defwidget stage (jupyter-widgets:dom-widget)
   ((impostor
      :accessor impostor
      :initarg :imposter
@@ -194,7 +194,6 @@
    (callbacks
      :reader callbacks
      :initform (make-hash-table :test #'equal)))
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
     :%model-name "StageModel"

@@ -1,7 +1,7 @@
 (in-package #:ngl)
 
 
-(defclass annotation (jupyter-widgets:widget)
+(jupyter-widgets:defwidget annotation (jupyter-widgets:widget)
   ((position
      :accessor position
      :initarg :position
@@ -26,7 +26,6 @@
      :initform t
      :trait :bool
      :documentation "visibility flag"))
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "Annotation HTML element floating on top of a position rendered in 3d")
   (:default-initargs
     :%model-name "AnnotationModel"

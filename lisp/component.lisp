@@ -1,7 +1,7 @@
 (in-package #:ngl)
 
 
-(defclass component (jupyter-widgets:widget)
+(jupyter-widgets:defwidget component (jupyter-widgets:widget)
   ((name
      :accessor name
      :initarg :name
@@ -41,7 +41,6 @@
      :initarg :visible
      :initform t
      :trait :bool))
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
     :%model-module +module-name+
@@ -50,7 +49,7 @@
     :%view-module-version +module-version+))
 
 
-(defclass structure (component)
+(jupyter-widgets:defwidget structure (component)
   ((ext
      :accessor ext
      :initarg :ext
@@ -76,7 +75,6 @@
      :initarg :trajectories
      :initform nil
      :trait :widget-list))
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
     :%model-name "StructureModel"
@@ -132,13 +130,12 @@
   (values))
 
 
-(defclass shape (component)
+(jupyter-widgets:defwidget shape (component)
   ((primitives
     :accessor primitives
     :initarg :primitives
     :initform nil
     :trait :plist-list-snake-case))
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
     :%model-name "ShapeModel"

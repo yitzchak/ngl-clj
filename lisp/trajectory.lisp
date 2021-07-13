@@ -1,7 +1,7 @@
 (in-package #:ngl)
 
 
-(defclass trajectory (jupyter-widgets:widget)
+(jupyter-widgets:defwidget trajectory (jupyter-widgets:widget)
   ((name
      :accessor name
      :initarg :name
@@ -83,7 +83,6 @@
      :initform (lambda (instance i atom-indices)
                  (declare (ignore instance i atom-indices))
                  (values i nil #() 0))))
-  (:metaclass jupyter-widgets:trait-metaclass)
   (:documentation "")
   (:default-initargs
     :%model-name "TrajectoryModel"
