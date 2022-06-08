@@ -21,7 +21,7 @@ export class TrajectoryModel extends WidgetModel {
       direction: 'forward',
       ext: null,
       frame: 0,
-      count: 0,
+      count: null,
       interpolate_step: 5,
       interpolate_type: "",
       is_running: false,
@@ -31,7 +31,7 @@ export class TrajectoryModel extends WidgetModel {
       timeout: 50,
       value: null,
       start: 0,
-      end: 0,
+      end: null,
 
       _model_name: 'TrajectoryModel',
       _model_module: MODULE_NAME,
@@ -147,10 +147,10 @@ export class TrajectoryView extends WidgetView {
       this.model.save_changes();
     });
 
-    this.trajectory_obj.signals.frameChanged.add((frame: number): void => {
+    /*this.trajectory_obj.signals.frameChanged.add((frame: number): void => {
       this.model.set('frame', frame);
       this.model.save_changes();
-    });
+    });*/
 
     this.trajectory_obj.signals.countChanged.add((count: number): void => {
       this.model.set('count', count);
@@ -170,10 +170,11 @@ export class TrajectoryView extends WidgetView {
 
   async load_file(): Promise<any> {
     var value: any = this.model.get('value');
+    var ext: any = this.model.get('ext');
     let params: any = {};
 
-    if (value && this.model.get('ext')) {
-      params.ext = this.model.get('ext');
+    if (value && ext) {
+      params.ext = ext;
     	value = new Blob([(value instanceof DataView) ? value.buffer : value],
     	                 { type: (typeof value === 'string' || value instanceof String)
     	                            ? 'text/plain'
@@ -182,7 +183,7 @@ export class TrajectoryView extends WidgetView {
 
     if (value === null) { // Trajectory associated with the structure
       this.trajectory_obj = await this.component_obj.addTrajectory('', this.get_parameters());
-    } else if (value.startsWith('jupyter:')) { // Jupyter remote trajectory
+    } else if (typeof value === 'string' && value.startsWith('jupyter:')) { // Jupyter remote trajectory
       this.trajectory_obj = await this.component_obj.addTrajectory(this.request.bind(this), this.get_parameters());
     } else { // Trajectory passed by value or normal NGL remote trajectory
       this.trajectory_obj = await this.component_obj.addTrajectory(await NGL.autoLoad(value, params),

@@ -70,6 +70,11 @@
      :initarg :as-trajectory
      :initform nil
      :trait :bool)
+   (sele
+     :accessor sele
+     :initarg :sele
+     :initform ""
+     :trait :string)
    (trajectories
      :accessor trajectories
      :initarg :trajectories

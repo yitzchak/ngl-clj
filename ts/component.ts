@@ -253,6 +253,7 @@ export class StructureModel extends ComponentModel {
 
       ext: null,
       value: null,
+      sele: "",
       as_trajectory: false,
       trajectories: [],
 
@@ -281,7 +282,7 @@ export class StructureView extends ComponentView {
   }
 
   parameter_names(): Array<string> {
-    return super.parameter_names().concat(['ext', 'as_trajectory']);
+    return super.parameter_names().concat(['ext', 'as_trajectory', 'sele']);
   }
 
   async change_trajectories() {

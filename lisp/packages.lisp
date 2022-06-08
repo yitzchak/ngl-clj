@@ -60,6 +60,7 @@
     #:fog-near
     #:frame
     #:fullscreen
+    #:helixorient
     #:hover-timeout
     #:impostor
     #:interior-color

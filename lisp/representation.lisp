@@ -360,6 +360,18 @@
     :%model-name "LineModel"))
 
 
+(jupyter/widgets:defwidget helixorient (structure-representation)
+  ()
+  (:documentation "")
+  (:default-initargs
+    :color-scheme "sstruc"
+    ;:radius-type "size"
+    ;:radius-size 0.15
+    ;:radius-scale 1.0
+    :use-interior-color t
+    :%model-name "HelixorientModel"))
+
+
 (jupyter/widgets:defwidget measurement (representation)
   ((label-size
      :accessor label-size

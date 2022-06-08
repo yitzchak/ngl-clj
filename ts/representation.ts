@@ -271,6 +271,18 @@ export class LineModel extends StructureRepresentationModel {
 }
 
 
+export class HelixorientModel extends StructureRepresentationModel {
+  defaults(): any {
+    return {
+      ...super.defaults(),
+
+      _type: 'helixorient',
+      _model_name: 'HelixorientModel'
+    };
+  }
+}
+
+
 export class MeasurementRepresentationModel extends RepresentationModel {
   defaults(): any {
     return {

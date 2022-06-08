@@ -24,7 +24,7 @@
    (count
      :accessor %count
      :initarg :count
-     :initform 0
+     :initform :null
      :trait :int)
    (step
      :accessor %step
@@ -39,7 +39,7 @@
    (end
      :accessor end
      :initarg :end
-     :initform 0
+     :initform :null
      :trait :int)
    (timeout
      :accessor timeout
