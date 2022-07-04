@@ -44,7 +44,7 @@
   "devDependencies": {
     "@phosphor/application": "^1.7.3",
     "@phosphor/widgets": "^1.9.3",
-    "@types/node": "^17.0.39",
+    "@types/node": "^18.0.1",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
     "eslint": "^8.16.0",
