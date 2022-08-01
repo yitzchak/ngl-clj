@@ -76,11 +76,18 @@ export class RepresentationView extends WidgetView {
     this.model.on('msg:custom', this.handle_custom_message.bind(this));
     this.model.on('change', this.parameters_changed.bind(this));
     this.model.on('change:visible', this.visible_changed.bind(this));
+    this.model.on('change:sele', this.sele_changed.bind(this));
   }
 
   visible_changed() {
     if (this.representation_obj) {
       this.representation_obj.setVisibility(this.model.get('visible'));
+    }
+  }
+
+  sele_changed() {
+    if (this.representation_obj && this.representation_obj.setSelection) {
+      this.representation_obj.setSelection(this.model.get('sele'));
     }
   }
 
@@ -180,6 +187,21 @@ export class StructureRepresentationModel extends RepresentationModel {
 }
 
 
+export class AxesModel extends StructureRepresentationModel {
+  defaults(): any {
+    return {
+      ...super.defaults(),
+
+      show_axes: false,
+      show_box: false,
+
+      _type: 'axes',
+      _model_name: 'AxesModel'
+    };
+  }
+}
+
+
 export class CartoonModel extends StructureRepresentationModel {
   defaults(): any {
     return {
@@ -211,7 +233,7 @@ export class BallAndStickModel extends StructureRepresentationModel {
       //disable_impostor: true,
       // line_only: false,
       // linewidth: 2,
-      multiple_bond: 'off',
+      //multiple_bond: 'off',
       //open_ended: true,
       //radial_segments: 10,
       //sphere_detail: 2,

@@ -145,6 +145,10 @@ export class StageView extends DOMWidgetView {
       'tooltip',
       'mouse_preset'
     ], this.setParameters.bind(this), this);
+
+    this.on('remove', () => {
+      this.send({ event: 'remove' });
+    });
   }
 
   async components_changed() {

@@ -189,6 +189,10 @@
      :accessor on-select
      :initarg :on-select
      :initform nil)
+   (on-remove
+     :accessor on-remove
+     :initarg :on-remove
+     :initform nil)
    (callbacks-lock
      :accessor callbacks-lock)
    (callbacks
@@ -239,6 +243,9 @@
       (let ((data (gethash "data" content)))
         (dolist (handler (on-select instance))
           (funcall handler instance data))))
+    ("remove"
+      (dolist (handler (on-remove instance))
+        (funcall handler instance)))
     (otherwise
       (call-next-method))))
 

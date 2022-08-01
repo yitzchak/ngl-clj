@@ -48,6 +48,7 @@ export class TrajectoryView extends WidgetView {
   component_obj: any;
   trajectory_obj: any;
   rendered = false;
+  frame_set_time: any;
   count_callbacks: Function[] = [];
   frame_callbacks: Function[] = [];
 
@@ -147,10 +148,17 @@ export class TrajectoryView extends WidgetView {
       this.model.save_changes();
     });
 
-    /*this.trajectory_obj.signals.frameChanged.add((frame: number): void => {
-      this.model.set('frame', frame);
-      this.model.save_changes();
-    });*/
+    this.trajectory_obj.signals.frameChanged.add((frame: number): void => {
+      if (frame != this.model.get('frame')) {
+        this.model.set('frame', frame);
+        let now = Date.now();
+        if (!this.model.get('is_running') || !this.frame_set_time ||
+            (now - this.frame_set_time) >= 1000) {
+          this.frame_set_time = now;
+          this.model.save_changes();
+        }
+      }
+    });
 
     this.trajectory_obj.signals.countChanged.add((count: number): void => {
       this.model.set('count', count);

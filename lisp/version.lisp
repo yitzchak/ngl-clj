@@ -1,5 +1,5 @@
 (in-package #:ngl)
 
 (defparameter +module-name+ "ngl-clj")
-(defparameter +module-version+ "^0.8.15")
+(defparameter +module-version+ "^0.9.0")
 

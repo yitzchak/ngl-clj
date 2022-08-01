@@ -230,6 +230,20 @@
      :trait :string))
   (:documentation ""))
 
+(jupyter/widgets:defwidget axes-representation (structure-representation)
+  ((show-axes
+     :accessor show-axes
+     :initarg :show-axes
+     :initform nil
+     :trait :boolean)
+   (show-box
+     :accessor show-box
+     :initarg :show-box
+     :initform nil
+     :trait :boolean))
+  (:documentation "")
+  (:default-initargs
+    :%model-name "AxesModel"))
 
 (jupyter/widgets:defwidget cartoon (structure-representation)
   ((aspect-ratio
@@ -304,7 +318,7 @@
      :initarg :linewidth
      :initform 2s0
      :trait :float)
-   (multiple-bond
+   #+(or)(multiple-bond
      :accessor multiple-bond
      :initarg :multiple-bond
      :initform "off"

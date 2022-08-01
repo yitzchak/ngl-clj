@@ -11,6 +11,7 @@
     #:atom-quad
     #:auto-view
     #:auto-view-duration
+    #:axes-representation
     #:backbone
     #:background
     #:background-color
@@ -79,6 +80,7 @@
     #:line
     #:line-only
     #:linewidth
+    #:make-image
     #:matrix
     #:measurement
     #:metalness
@@ -89,6 +91,7 @@
     #:name
     #:offset
     #:on-pick
+    #:on-remove
     #:on-select
     #:on-stage-pick
     #:on-stage-select
@@ -121,6 +124,8 @@
     #:scale-factor
     #:sele
     #:shape
+    #:show-axes
+    #:show-box
     #:side
     #:smooth
     #:smooth-sheet
