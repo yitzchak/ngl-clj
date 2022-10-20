@@ -37,7 +37,7 @@
     "prepack": "yarn run build"
   },
   "dependencies": {
-    "@jupyter-widgets/base": "^4.1.0",
+    "@jupyter-widgets/base": "^6.0.1",
     "case": "^1.6.3",
     "ngl": "nglviewer/ngl#v2.0.0"
   },
