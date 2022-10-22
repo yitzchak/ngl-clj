@@ -295,8 +295,8 @@ export class StageView extends DOMWidgetView {
     }
   }
 
-  processPhosphorMessage(msg: any): void {
-    super.processPhosphorMessage(msg);
+  processLuminoMessage(msg: any): void {
+    super.processLuminoMessage(msg);
     if ((msg.type === 'resize' || msg.type === 'after-show') && this.stage_obj) {
       const box = this.el.getBoundingClientRect();
       this.stage_obj.setSize(Math.floor(box.width) + 'px', Math.floor(box.height) + 'px');
