@@ -1,6 +1,6 @@
 {
   "name": "ngl-clj",
-  "version": "0.10.2",
+  "version": "0.10.3",
   "description": "A ngl Widget for Common Lisp Jupyter",
   "keywords": [
     "nglview",
@@ -37,9 +37,9 @@
     "prepack": "yarn run build"
   },
   "dependencies": {
-    "@jupyter-widgets/base": "^6.0.1",
+    "@jupyter-widgets/base": "^6.0.2",
     "case": "^1.6.3",
-    "ngl": "nglviewer/ngl#v2.0.2"
+    "ngl": "2.0.2"
   },
   "devDependencies": {
     "@phosphor/application": "^1.7.3",
