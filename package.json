@@ -39,7 +39,7 @@
   "dependencies": {
     "@jupyter-widgets/base": "^6.0.2",
     "case": "^1.6.3",
-    "ngl": "2.0.2"
+    "ngl": "2.1.0"
   },
   "devDependencies": {
     "@phosphor/application": "^1.7.3",
