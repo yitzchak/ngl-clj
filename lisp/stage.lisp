@@ -139,9 +139,9 @@
      :initform 0d0
      :trait :float
      :documentation "timeout for hovering")
-   (tooltip
-     :accessor tooltip
-     :initarg :tooltip
+   (stage-tooltip
+     :accessor stage-tooltip
+     :initarg :stage-tooltip
      :initform t
      :trait :bool
      :documentation "")

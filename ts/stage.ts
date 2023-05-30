@@ -52,7 +52,7 @@ export class StageModel extends DOMWidgetModel {
       rotate_speed: 2.0,
       sample_level: 0,
       spin: false,
-      tooltip: true,
+      stage_tooltip: true,
       worker_default: true,
       zoom_zpeed: 1.2,
 
@@ -142,7 +142,7 @@ export class StageView extends DOMWidgetView {
       'ambient_color',
       'ambient_intensity',
       'hover_timeout',
-      'tooltip',
+      'stage_tooltip',
       'mouse_preset'
     ], this.setParameters.bind(this), this);
 
@@ -210,7 +210,7 @@ export class StageView extends DOMWidgetView {
       ambientColor: this.model.get('ambient_color'),
       ambientIntensity: this.model.get('ambient_intensity'),
       hoverTimeout: this.model.get('hover_timeout'),
-      tooltip: this.model.get('tooltip'),
+      tooltip: this.model.get('stage_tooltip'),
       mousePreset: this.model.get('mouse_preset')
     }
   }
