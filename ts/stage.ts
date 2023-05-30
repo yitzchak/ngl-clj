@@ -226,6 +226,7 @@ export class StageView extends DOMWidgetView {
       this.el.appendChild(this.stage_container);
 
       this.stage_obj = new NGL.Stage(this.stage_container, this.stage_parameters());
+      document.body.appendChild(this.stage_obj.tooltip);
       this.components_changed();
       if (this.model.get('spin')) {
         this.stage_obj.setSpin(true);
