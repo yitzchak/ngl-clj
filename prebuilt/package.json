@@ -66,6 +66,10 @@
         "bundled": false,
         "singleton": true
       }
+    },
+    "_build": {
+      "load": "static/remoteEntry.66c03c413918721c0ce5.js",
+      "extension": "./extension"
     }
   },
   "lint-staged": {

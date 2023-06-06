@@ -30,11 +30,11 @@ function activateWidgetExtension(
 
     exports: async () => {
       return {
-        ...await import(/* webpackChunkName: "ngl-clj" */ './annotation'),
-        ...await import(/* webpackChunkName: "ngl-clj" */ './component'),
-        ...await import(/* webpackChunkName: "ngl-clj" */ './representation'),
-        ...await import(/* webpackChunkName: "ngl-clj" */ './trajectory'),
-        ...await import(/* webpackChunkName: "ngl-clj" */ './stage')
+        ...await import('./annotation'),
+        ...await import('./component'),
+        ...await import('./representation'),
+        ...await import('./trajectory'),
+        ...await import('./stage')
       }
     }
   });
