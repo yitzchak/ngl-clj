@@ -94,13 +94,15 @@ export class TrajectoryView extends WidgetView {
   update_player_parameters(): void {
     if (this.trajectory_obj) {
       const params = serialize_model(this.model,
-                                     { 'step': null, 'timeout': null,
-                                       'interpolateType': null,
-                                       'interpolateStep': null,
-                                       'mode': null,
-                                       'start': null,
-                                       'end': null,
-                                       'direction': null });
+        {
+          'step': null, 'timeout': null,
+          'interpolateType': null,
+          'interpolateStep': null,
+          'mode': null,
+          'start': null,
+          'end': null,
+          'direction': null
+        });
       this.trajectory_obj.trajectory.player.setParameters(params);
     }
   }
@@ -153,7 +155,7 @@ export class TrajectoryView extends WidgetView {
         this.model.set('frame', frame);
         let now = Date.now();
         if (!this.model.get('is_running') || !this.frame_set_time ||
-            (now - this.frame_set_time) >= 1000) {
+          (now - this.frame_set_time) >= 1000) {
           this.frame_set_time = now;
           this.model.save_changes();
         }
@@ -183,10 +185,12 @@ export class TrajectoryView extends WidgetView {
 
     if (value && ext) {
       params.ext = ext;
-    	value = new Blob([(value instanceof DataView) ? value.buffer : value],
-    	                 { type: (typeof value === 'string' || value instanceof String)
-    	                            ? 'text/plain'
-    	                            : 'application/octet-binary' });
+      value = new Blob([(value instanceof DataView) ? value.buffer : value],
+        {
+          type: (typeof value === 'string' || value instanceof String)
+            ? 'text/plain'
+            : 'application/octet-binary'
+        });
     }
 
     if (value === null) { // Trajectory associated with the structure
@@ -195,7 +199,7 @@ export class TrajectoryView extends WidgetView {
       this.trajectory_obj = await this.component_obj.addTrajectory(this.request.bind(this), this.get_parameters());
     } else { // Trajectory passed by value or normal NGL remote trajectory
       this.trajectory_obj = await this.component_obj.addTrajectory(await NGL.autoLoad(value, params),
-                                                                   this.get_parameters());
+        this.get_parameters());
     }
   }
 
@@ -214,7 +218,7 @@ export class TrajectoryView extends WidgetView {
     if (this.component_obj && !this.trajectory_obj && !this.rendered) {
       this.rendered = true;
       await this.load_file();
-  	  this.wire_view();
+      this.wire_view();
     }
   }
 
@@ -226,4 +230,3 @@ export class TrajectoryView extends WidgetView {
     this.trajectory_obj = null;
   }
 }
-

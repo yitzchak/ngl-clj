@@ -94,9 +94,9 @@ export class AnnotationView extends WidgetView {
         new NGL.Vector3(position[0], position[1], position[2]),
         t,
         {
-        	offsetX: offset[0],
-        	offsetY: offset[1],
-        	visible: this.model.get('visible')
+          offsetX: offset[0],
+          offsetY: offset[1],
+          visible: this.model.get('visible')
         });
     }
   }

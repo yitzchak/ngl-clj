@@ -298,9 +298,11 @@ export class StructureView extends ComponentView {
 
     if (this.model.get('ext')) {
       value = new Blob([value],
-                       { type: (typeof value === 'string' || value instanceof String)
-                                  ? 'text/plain'
-                                  : 'application/octet-binary' });
+        {
+          type: (typeof value === 'string' || value instanceof String)
+            ? 'text/plain'
+            : 'application/octet-binary'
+        });
     }
 
     return this.stage_obj.loadFile(value, this.get_parameters());
@@ -414,5 +416,3 @@ export class ShapeView extends ComponentView {
     }
   }
 }
-
-

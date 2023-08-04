@@ -118,7 +118,7 @@ export class RepresentationView extends WidgetView {
     if (this.component_obj && !this.representation_obj) {
       this.representation_obj =
         this.component_obj.addRepresentation(this.model.get('_type'),
-                                             { sdf: false, ...this.get_parameters() });
+          { sdf: false, ...this.get_parameters() });
     }
   }
 
@@ -166,7 +166,7 @@ export class BufferRepresentationView extends RepresentationView {
     if (this.component_obj && !this.representation_obj && buffer.type) {
       this.representation_obj =
         this.component_obj.addBufferRepresentation(create_buffer(buffer),
-                                                   this.get_parameters());
+          this.get_parameters());
     } else {
       super.render();
     }
