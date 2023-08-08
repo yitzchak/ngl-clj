@@ -38,7 +38,7 @@
   "dependencies": {
     "@jupyter-widgets/base": "^6.0.4",
     "case": "^1.6.3",
-    "ngl": "2.1.0"
+    "ngl": "2.1.1"
   },
   "devDependencies": {
     "@jupyterlab/application": "^4.0.1",
