@@ -31,6 +31,7 @@
   },
   "scripts": {
     "build": "tsc && jupyter-labextension build",
+    "lab-install": "sbcl --non-interactive --eval \"(asdf:load-system :ngl-clj)\"",
     "lint": "eslint . --ext .ts --fix",
     "lint-check": "eslint . --ext .ts",
     "prepack": "yarn run build"
@@ -38,7 +39,7 @@
   "dependencies": {
     "@jupyter-widgets/base": "^6.0.4",
     "case": "^1.6.3",
-    "ngl": "2.1.1"
+    "ngl": "yitzchak/ngl#7876890fa999cd41566c843990b2a3de6460cfda"
   },
   "devDependencies": {
     "@jupyterlab/application": "^4.0.1",

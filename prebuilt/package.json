@@ -31,6 +31,7 @@
   },
   "scripts": {
     "build": "tsc && jupyter-labextension build",
+    "lab-install": "sbcl --non-interactive --eval \"(asdf:load-system :ngl-clj)\"",
     "lint": "eslint . --ext .ts --fix",
     "lint-check": "eslint . --ext .ts",
     "prepack": "yarn run build"
@@ -38,19 +39,19 @@
   "dependencies": {
     "@jupyter-widgets/base": "^6.0.4",
     "case": "^1.6.3",
-    "ngl": "2.1.0"
+    "ngl": "yitzchak/ngl#7876890fa999cd41566c843990b2a3de6460cfda"
   },
   "devDependencies": {
     "@jupyterlab/application": "^4.0.1",
     "@jupyterlab/builder": "^4.0.1",
     "@types/node": "^20.2.5",
-    "@typescript-eslint/eslint-plugin": "^5.27.0",
+    "@typescript-eslint/eslint-plugin": "^6.3.0",
     "@typescript-eslint/parser": "^5.27.0",
     "eslint": "^8.16.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-standard": "^5.0.0",
     "lint-staged": "^13.0.3",
@@ -66,7 +67,7 @@
       }
     },
     "_build": {
-      "load": "static/remoteEntry.fa0a45b9221eb68af02e.js",
+      "load": "static/remoteEntry.f63c374353d9097e7fb5.js",
       "extension": "./extension"
     }
   },
